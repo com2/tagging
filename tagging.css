@@ -1,0 +1,53 @@
+/* $Id:$ */
+/* $Id: active_tags.css,v 1.1.2.1 2008/09/12 17:05:03 darrenmuk Exp $ */
+
+.tag-text {
+  margin:5px 3px 5px 3px;
+  cursor:pointer;
+  background: url('remove.png') white no-repeat right center;  
+  padding:3px 19px 3px 3px;
+  border:1px solid grey;
+  -moz-border-radius:4px; 
+  float:left;
+}
+
+.tag-text a{
+  cursor:pointer;
+}
+
+#tagging-widget-container .tagging-widget {
+  width:150px;
+  float:left;
+  margin-top:3px;
+  clear:both;    
+}
+
+
+.tagging-button {
+  float:left;
+  margin:0px 0px 0px 5px;
+  width:21px;
+  height:22px;
+  background:url('add.png') white no-repeat center;
+}
+
+.tagging-wrapper {  
+  background-color:#eee;
+  padding:5px 0px 10px 0px;  
+}
+
+.suggestion-tagging-wrapper {
+  clear:both;
+  background-color:#eee;
+  padding:10px 0px 5px 0px;
+  
+}
+
+.suggest-tag-text {
+  background: url('add-suggestion.png') white no-repeat right;  
+  margin:5px 5px 5px 5px;
+  padding:3px 16px 3px 3px;
+  cursor:pointer;
+  -moz-border-radius:4px;
+  border:1px solid grey;
+}
