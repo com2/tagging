@@ -1,0 +1,161 @@
+<?php
+// $Id$
+/*
+ * Implementing hook_elements
+ * Registeringing the new form element, so we can render the tagging form element properly
+ */
+function tagging_elements() {
+  $type['tagging_widget'] = array(
+    '#input' => TRUE,
+    '#after_build' => array('tagging_widget_javascript'),   
+    '#process' => array('tagging_add_suggestions'),   
+    '#default_value' => -1,
+  );
+  return $type;
+}
+
+/**
+ * Implementation of hook_form_alter.
+ * 
+ */
+function tagging_form_alter(&$form, $form_state, $form_id) {
+  // Showing taxonomy settings. Lets show our settings also.
+  if ($form_id === 'taxonomy_form_vocabulary') {
+    $form['settings']['tagging_inject'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Tagging Widget'),
+      '#weight' => 10,
+      '#default_value' => variable_get('tagging_inject_'. $form['vid']['#value'], 0),
+      '#description' => t('Use the visual tagging-widget, when this taxonomy is shown to the user'),
+    );
+    $form['#submit'][] = 'tagging_form_vocabulary_submit';
+  }
+  // Check if we are editting a node and we actually have a tag taxonomy.
+  if ($form['#id'] === 'node-form' && isset($form['taxonomy']['tags'])) {  
+    foreach ($form['taxonomy']['tags'] as $id => $values) {
+      if (variable_get('tagging_inject_'. $id, 0) == 1) {       
+        $form['taxonomy']['tags'][$id]['#type'] = 'tagging_widget';
+        $form['taxonomy']['tags'][$id]['#vid'] = $id;
+        $form['taxonomy']['tags'][$id]['#nid'] = $form['nid']['#value'];
+      }
+    }
+  }
+}
+
+/*
+ * Defining new hook: hook_tagging_suggestion
+ * Modules can use this hook to implement their methods to provide suggestions for tagging 
+ * the current node
+ */
+function tagging_add_suggestions($element) {
+  // TODO: Quite expensive here. Should we only fetch the body? This might
+  // change in the future
+  $node = node_load($element['#nid']);
+  $suggestions = module_invoke_all('tagging_suggestions', $element['#vid'], $node);  
+  // Validation
+  if ( !is_array($suggestions) ) {
+    $suggestions = array();
+    watchdog(WATCHDOG_WARNING, 'Tagging: Could not parse suggestion array - maybe some hooks are out of bound?');
+  }
+  $element['#suggestions'] = $suggestions;
+  return $element;
+}
+
+/*
+ * Implementing #process of the form element tagging_widget.
+ * Adding Javascript-Libraries needed, if a widget has been placed.
+ */
+function tagging_widget_javascript($form_element, &$form_state) {
+  drupal_add_css(drupal_get_path('module', 'tagging') .'/tagging.css', 'module');
+  drupal_add_js(drupal_get_path('module', 'tagging') .'/tagging.plugin.js', 'module');
+  drupal_add_js(drupal_get_path('module', 'tagging') .'/tagging.init.js', 'module');
+  return $form_element;
+}
+
+/*
+ * Implementing hook_theme.
+ */
+function tagging_theme() {
+  return array(
+    'tagging_widget' => array('arguments' => array('element' => NULL) ),
+    'tagging_suggestions' => array('arguments' => array('suggestions' => array(), 'vid' => NULL) )
+  ); 
+}
+
+/**
+ * Rendering the tagging widget.
+ */
+function theme_tagging_widget($element) { 
+  // TODO: Maybe use a file as a template..but otherwise...performance?
+  $vid = $element['#vid'];
+  $cur_tags = '';
+  // Lets add the tags to our wrapper. The jquery plugin will pick them up
+  // and bind some event on them, like "remove".
+  if ( $element['#value'] != '' ) {
+    foreach (split(',', $element['#value']) as $value) {
+      // TODO: use # here...but out of any reason it gets encoded to %23 in html
+      $value = check_plain($value);
+      $value = l($value, '', array('attributes' => array('title' => t('Remove tag'))));
+      
+      $cur_tags .= "<div class='tag-text'>$value</div>";
+    }    
+  }
+  $id = "tagging-widget-$vid";
+  
+  // Well this is the original. We actually just need it in the background, so that we 
+  // dont need to fight in the validation filter. We can let the normal taxonomy.modul
+  // validators and submitters do their job.
+  $element['#type'] = 'hidden'; 
+  $element['#attributes']['class'] = "tagging-widget-target-$vid";
+  $hidden_original = theme('hidden', $element);  
+  
+  // Ok now lets render the input textfield we will use for the tagging
+  $element['#type'] = 'textfield';
+  $element['#attributes']['class'] = "tagging-widget $id";
+  $element['#id']= "$id";
+  $element['#title']= "";
+  
+  $element['#field_prefix'] = "<div class='tagging-wrapper tagging-wrapper-$vid'><label>Tags:</label>$cur_tags</div>";
+  // Its convention that the tagging-widget-VID class it addid. That vid will be used
+  // to get the unique "context" id for all the other wrappers and functions.
+  if ( count($element['#suggestions']) > 0 ) {    
+    $element['#field_suffix'] = "<div class='suggestion-tagging-wrapper suggestion-tagging-wrapper-$vid'><label>"
+                                . t('Suggestions') . '</label>'.
+                                  theme('tagging_suggestions', $element['#suggestions'], $vid)
+                                  . "</div>";
+  }
+  $output .= theme('textfield', $element);
+  $output .= $hidden_original;   
+  return "<div id='tagging-widget-container'>$output</div>"; 
+}
+
+/*
+ * Saving the variable, whether to show the widget for a taxonomy or not
+ */
+
+function tagging_form_vocabulary_submit($form, &$form_state) {
+  variable_set('tagging_inject_'. $form_state['values']['vid'], $form_state['values']['tagging_inject']);
+  return TRUE;
+}
+
+/**
+ * Rendering suggestions for a specific vocabulary
+ */
+function theme_tagging_suggestions($suggestions, $vid) {
+    $cur_tags = '';
+    foreach ($suggestions as $value) {
+      $value = check_plain($value);
+      // TODO: use # here...but out of any reason it gets encoded to %23 in html
+      $value = l($value, '', array('attributes' => array('title' => t('Add tag'))));      
+      $cur_tags .= "<span id='tagging-$vid'class='suggest-tag-text'>$value</span>";
+    }   
+   
+    return $cur_tags;
+} 
+
+/*
+ * Example implementation of hook_tagging_suggestions * 
+ */
+function tagging_tagging_suggestions($vid, $node) {
+  return array($node->title, 'foo', 'bar');
+}
