@@ -6,6 +6,7 @@
 (function($) {
   $.fn.tagging = function() {
       return this.each( function(){
+        // **************** Init *****************/
         var context = get_context($(this).attr('class'));
         
         if(context === null) {
@@ -26,10 +27,12 @@
         
         $(input_sel).val('');
         
+        // **************** Helper methods *****************/
         /*
          * Adds a tag to the visual list and to the hidden input field (target).
          */
         function add_tag(tag, autoupdate) {
+          tag = Drupal.checkPlain(tag);
           $(wrapper_sel).append("<span class='tag-text'>"+tag+"</span>");
           if(autoupdate) {
             update_tags();
@@ -37,8 +40,8 @@
         }
         
         function add_tag_from_suggestion(tag, autoupdate) {
-          // not helping agains XSS, but we are better with it
-          tag = Drupal.check_plain(tag);
+          // not helping against XSS, but we are better with it
+          tag = Drupal.checkPlain(tag);
           $(wrapper_sel).append("<span class='tag-text'>"+tag+"</span>");
           if(autoupdate) {
             update_tags();
@@ -47,9 +50,20 @@
         /*
          * Removes a tag out of the visual list and out of the hidden input field (target).
          */
-        function remove_tag(e) {
+        function remove_tag(e) {          
           $(e).remove();
           unbind_taglist_events();
+          update_tags();
+          bind_taglist_events();
+          reshow_suggestion_if_exists($(e).text());
+        }
+        
+        /*
+         * Hides a tag out of the visual list. Suggestions need this to restore later
+         */
+        function hide_tag(e) {
+          $(e).hide();          
+          unbind_taglist_events();          
           update_tags();
           bind_taglist_events();
         }
@@ -64,10 +78,10 @@
             tags.push($(this).text());    
           });
 
-         $(target_sel).val(Drupal.check_plain(tags.join(',')));
+         $(target_sel).val(Drupal.checkPlain(tags.join(',')));
          //alert($(target_sel).val());
         }
-        
+                   
         /*
          * Checks, if the tag already exists. Lets avoid the dublicates
          * we have seen in the past. We dont tell the use anything, we
@@ -75,7 +89,7 @@
          * added, no matter its there or not.
          */
         function tag_exists(tag) {
-          var tag = Drupal.check_plain($.trim(tag));
+          var tag = Drupal.checkPlain($.trim(tag));
           var found = false;
           $(wrapper_sel+" span.tag-text").each(function() {
             if($(this).text() === tag) {
@@ -87,12 +101,23 @@
         }
         
         /*
+         * If a tag is removed from the tag list, we check here if it was a suggestion before
+         * if yes, we show it again in the suggestion list
+         */
+        function reshow_suggestion_if_exists(tag) {               
+          $(suggestions_wrapper_sel+" span.suggest-tag-text:hidden").each(function() {
+            if($(this).text() === tag) {
+              $(this).show();
+            }
+          });
+        }
+        
+        /*
          * Adds the button to the inputfield. Actuall the button is optional
          * as we also add (primary) by pressing enter.
          */
         function create_button() {                    
-          $(input_sel)
-          //.after('<input type="image" src="add.png" class="tagging-button tagging-button-'+context+'" name="tag_add" value="'+Drupal.t('Add')+'">');
+          $(input_sel)          
           .after('<a href="#" title="'+Drupal.t('Add')+'"><span class="tagging-button tagging-button-'+context+'"></span></a>');
           
           $(button_sel).bind('click',function() {   
@@ -106,6 +131,7 @@
               $(input_sel).val('');              
               update_tags();
               bind_taglist_events();
+              return false;
           });          
         }
         
@@ -142,20 +168,47 @@
         function bind_taglist_events() {
           $(wrapper_sel+" span.tag-text:not(span.processed)").each(function() {
               $(this).addClass('processed');
-              $(this).bind('click',function() { remove_tag(this); return false; });            
+              // We use non anonymuos binds to be properly able to unbind them
+              $(this).bind('click',remove_tag_click);
+              $(this).children('a').bind('click',fire_parent_click);
             } 
           );
           
-          $(suggestions_wrapper_sel+" span.suggest-tag-text").each(function() {             
-              $(this).bind('click',function() { 
-                add_tag_from_suggestion($(this).children().text()); 
-                remove_tag(this); 
-                return false;
-              });            
+          // For suggestion, we only hide tags. When those tags are remove from the tag
+          // list, we can simply check for the existence and show them again
+          // issue 649312.
+          $(suggestions_wrapper_sel+" span.suggest-tag-text:not(span.processed)").each(function() {
+            // We use non anonymuos binds to be properly able to unbind them             
+              $(this).bind('click',add_suggestion_tag_click);       
+              $(this).children('a').bind('click',fire_parent_click);
             } 
           );
         }
         
+        /*
+         * We use this event to bind the <a> inside a term or a suggestion.
+         */
+        function fire_parent_click () { 
+          $(this).parent().click();
+          return false;
+        }
+        
+        /*
+         * Click event for a suggested tag.
+         */
+        function add_suggestion_tag_click () { 
+          $(this).addClass('processed');
+          add_tag_from_suggestion($(this).children().text()); 
+          hide_tag(this); 
+          return false;
+        }
+        
+        /*
+         * Click event for a tag.
+         */   
+        function remove_tag_click() { 
+          remove_tag(this); return false;
+        }           
         /*
          * During updating of the tags, we unbind the events to avoid
          * sideffects.
@@ -163,7 +216,14 @@
         function unbind_taglist_events() {
           $(wrapper_sel+" span.tag-text").each(function() {
               $(this).removeClass('processed');
-              $(this).unbind('click');            
+              $(this).unbind('click',remove_tag_click);            
+              return false;
+            }
+          );
+          
+          $(suggestions_wrapper_sel+" span.tag-text").each(function() {
+              $(this).removeClass('processed');
+              $(this).unbind('click',add_suggestion_tag_click);            
               return false;
             }
           );
