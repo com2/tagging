@@ -192,10 +192,9 @@ function tagging_add_suggestions($element) {
  */
 function tagging_tagging_suggestions($vid, $node) {  
   // dont show this, if the example is deactivated
-  /*if(variable_get('tagging_show_suggestion_example', 1) == 0) {
-    dsm(variable_get('tagging_show_suggestion_example', 1));
+  if(variable_get('tagging_show_suggestion_example', 1) == 0) {
     return array();
-  }*/
+  }
   
   $suggestions[] =  array('#name' => 'Drupal', '#weight' => 1);
   $suggestions[] =  array('#name' => $node->title, '#weight' => 10);
