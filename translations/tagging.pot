@@ -1,0 +1,70 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  tagging.module: n/a
+#  tagging.info: n/a
+#  tagging.plugin.js: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2009-12-03 10:32+0100\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: tagging.module:46
+msgid "Tagging Widget"
+msgstr ""
+
+#: tagging.module:49
+msgid "Use the visual tagging-widget, when this taxonomy is shown to the user"
+msgstr ""
+
+#: tagging.module:87
+msgid "Remove tag"
+msgstr ""
+
+#: tagging.module:106
+msgid "Assigned Tags:"
+msgstr ""
+
+#: tagging.module:111
+msgid "Suggestions"
+msgstr ""
+
+#: tagging.module:131
+msgid "Add tag"
+msgstr ""
+
+#: tagging.module:12
+msgid "Tagging configuration"
+msgstr ""
+
+#: tagging.module:13
+msgid "Configuration options for the tagging module"
+msgstr ""
+
+#: tagging.info:0
+msgid "Tagging"
+msgstr ""
+
+#: tagging.info:0
+msgid "This widget is replacing the default Drupal-Tagging-Interface with a more visual driven one, to make tagging even easier."
+msgstr ""
+
+#: tagging.info:0
+msgid "Taxonomy"
+msgstr ""
+
+#: tagging.plugin.js:0
+msgid "Add"
+msgstr ""
+

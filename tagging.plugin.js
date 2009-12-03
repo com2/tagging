@@ -6,6 +6,7 @@
 (function($) {
   $.fn.tagging = function() {
       return this.each( function(){
+        // **************** Init *****************/
         var context = get_context($(this).attr('class'));
         
         if(context === null) {
@@ -13,41 +14,53 @@
           return;
         }
         // Our containers.
-        var input_sel = '.tagging-widget-'+context;
+        var input_sel = '.tagging-widget-input-'+context;
         var button_sel = '.tagging-button-'+context;
-        var wrapper_sel = '.tagging-wrapper-'+context;
-        var suggestions_wrapper_sel = '.suggestion-tagging-wrapper-'+context; 
-        var target_sel = '.tagging-widget-target-'+context;     
+        var wrapper_sel = '.tagging-curtags-wrapper-'+context;
+        var suggestions_wrapper_sel = '.tagging-suggestions-wrapper-'+context; 
+        var target_sel = '.tagging-widget-target-'+context; 
+        var suggest_class = 'tagging-suggest-tag';
+        var tag_class = 'tagging-tag';
+        var suggest_sel = '.'+suggest_class;
+        var tag_sel =  '.'+tag_class;
+        
         // Lets set all things up.
-        bind_taglist_events();        
+        bind_taglist_events();
+        bind_button();        
         update_tags();
-        create_button();
         bind_enter();
         
         $(input_sel).val('');
         
+        // **************** Helper methods *****************/
         /*
          * Adds a tag to the visual list and to the hidden input field (target).
          */
         function add_tag(tag, autoupdate) {
-          $(wrapper_sel).append("<span class='tag-text'>"+tag+"</span>");
+          tag = Drupal.checkPlain(tag);
+          $(wrapper_sel).append("<div class='"+tag_class+"'>"+tag+"</div>");
           if(autoupdate) {
             update_tags();
           }
         }
-        
-        function add_tag_from_suggestion(tag, autoupdate) {
-          $(wrapper_sel).append("<span class='tag-text'>"+tag+"</span>");
-          if(autoupdate) {
-            update_tags();
-          }
-        }
+
         /*
          * Removes a tag out of the visual list and out of the hidden input field (target).
          */
-        function remove_tag(e) {
+        function remove_tag(e) {          
           $(e).remove();
           unbind_taglist_events();
+          update_tags();
+          bind_taglist_events();
+          reshow_suggestion_if_exists($(e).text());
+        }
+        
+        /*
+         * Hides a tag out of the visual list. Suggestions need this to restore later
+         */
+        function hide_tag(e) {
+          $(e).hide();          
+          unbind_taglist_events();          
           update_tags();
           bind_taglist_events();
         }
@@ -58,14 +71,12 @@
          */
         function update_tags() {
          var tags = new Array();
-         $(wrapper_sel+" span.tag-text").each( function () {
-            tags.push($(this).text());    
-          });
-
-         $(target_sel).val(tags.join(','));
-         //alert($(target_sel).val());
+         $(wrapper_sel+' '+tag_sel).each( function () {
+            tags.push($(this).text());  
+         });
+         $(target_sel).val(Drupal.checkPlain(tags.join(',')));      
         }
-        
+                   
         /*
          * Checks, if the tag already exists. Lets avoid the dublicates
          * we have seen in the past. We dont tell the use anything, we
@@ -73,9 +84,9 @@
          * added, no matter its there or not.
          */
         function tag_exists(tag) {
-          var tag = $.trim(tag);
+          var tag = Drupal.checkPlain($.trim(tag));
           var found = false;
-          $(wrapper_sel+" span.tag-text").each(function() {
+          $(wrapper_sel+' '+tag_sel).each(function() {
             if($(this).text() === tag) {
               found = true;
               return;
@@ -85,14 +96,22 @@
         }
         
         /*
+         * If a tag is removed from the tag list, we check here if it was a suggestion before
+         * if yes, we show it again in the suggestion list
+         */
+        function reshow_suggestion_if_exists(tag) {               
+          $(suggestions_wrapper_sel+' '+suggest_sel+':hidden').each(function() {
+            if($(this).text() === tag) {
+              $(this).show();
+            }
+          });
+        }
+        
+        /*
          * Adds the button to the inputfield. Actuall the button is optional
          * as we also add (primary) by pressing enter.
          */
-        function create_button() {                    
-          $(input_sel)
-          //.after('<input type="image" src="add.png" class="tagging-button tagging-button-'+context+'" name="tag_add" value="'+Drupal.t('Add')+'">');
-          .after('<a href="#" title="'+Drupal.t('Add')+'"><span class="tagging-button tagging-button-'+context+'"></span></a>');
-          
+        function bind_button() {
           $(button_sel).bind('click',function() {   
               tags = $(input_sel).not('.tag-processed').val().split(',');         
               $.each(tags, function(i, tag) {
@@ -104,6 +123,7 @@
               $(input_sel).val('');              
               update_tags();
               bind_taglist_events();
+              return false;
           });          
         }
         
@@ -138,30 +158,59 @@
          * Adds the remove-tag methods to the tags in the wrapper.
          */
         function bind_taglist_events() {
-          $(wrapper_sel+" span.tag-text:not(span.processed)").each(function() {
+          $(wrapper_sel+' div'+tag_sel+':not(div.processed)').each(function() {
               $(this).addClass('processed');
-              $(this).bind('click',function() { remove_tag(this); return false; });            
+              // We use non anonymuos binds to be properly able to unbind them
+              $(this).bind('click',remove_tag_click);              
             } 
           );
           
-          $(suggestions_wrapper_sel+" span.suggest-tag-text").each(function() {             
-              $(this).bind('click',function() { 
-                add_tag_from_suggestion($(this).children().text()); 
-                remove_tag(this); 
-                return false;
-              });            
+          // For suggestion, we only hide tags. When those tags are remove from the tag
+          // list, we can simply check for the existence and show them again
+          // issue 649312.
+          $(suggestions_wrapper_sel+' div'+suggest_sel+':not(div.processed)').each(function() {
+             // We use non anonymuos binds to be properly able to unbind them  
+             $(this).addClass('processed');           
+              $(this).bind('click',add_suggestion_tag_click);
             } 
           );
         }
         
         /*
+         * Click event for a suggested tag.
+         */
+        function add_suggestion_tag_click () { 
+          $(this).addClass('processed');
+          tag = $(this).text();
+          // skip, if this tag is already assigned
+          if(tag_exists(tag))
+            return false;
+          add_tag(tag); 
+          hide_tag(this); 
+          return false;
+        }
+        
+        /*
+         * Click event for a tag.
+         */   
+        function remove_tag_click() { 
+          remove_tag(this); return false;
+        }           
+        /*
          * During updating of the tags, we unbind the events to avoid
          * sideffects.
          */
         function unbind_taglist_events() {
-          $(wrapper_sel+" span.tag-text").each(function() {
+          $(wrapper_sel+' '+tag_sel).each(function() {
               $(this).removeClass('processed');
-              $(this).unbind('click');            
+              $(this).unbind('click',remove_tag_click);            
+              return false;
+            }
+          );
+          
+          $(suggestions_wrapper_sel+' '+suggest_sel).each(function() {
+              $(this).removeClass('processed');
+              $(this).unbind('click',add_suggestion_tag_click);            
               return false;
             }
           );
@@ -175,7 +224,7 @@
         function get_context(classes) {
           context = null;
            $(classes.split(' ')).each(function(){ 
-              match = this.match(/tagging[-]widget[-](\d)+/i);
+              match = this.match(/tagging[-]widget[-]input[-](\d)+/i);
               if (match != null) {
                 context =  match[1];
               }           

@@ -1,7 +1,7 @@
 /* $Id:$ */
 /* $Id: active_tags.css,v 1.1.2.1 2008/09/12 17:05:03 darrenmuk Exp $ */
 
-.tag-text {
+.tagging-tag {
   margin:5px 3px 5px 3px;
   cursor:pointer;
   background: url('remove.png') white no-repeat right center;  
@@ -11,43 +11,60 @@
   float:left;
 }
 
-.tag-text a{
+.tagging-suggest-tag {
+  background: url('add.png') white no-repeat right;  
+  margin:5px 5px 5px 5px;
+  padding:3px 18px 3px 3px;
   cursor:pointer;
+  -moz-border-radius:4px;
+  border:1px solid grey;
+  float:left;
 }
 
-#tagging-widget-container .tagging-widget {
+#tagging-widget-container {  
+  clear:both;
+}
+#tagging-widget-container .tagging-widget-input {
   width:150px;
   float:left;
-  margin-top:3px;
-  clear:both;    
+  margin-top:3px;  
 }
 
 
 .tagging-button {
   float:left;
-  margin:0px 0px 0px 5px;
-  width:21px;
-  height:22px;
-  background:url('add.png') white no-repeat center;
+  margin:3px 0px 0px 5px;
+  width:19px;
+  height:19px;
+  background:url('add.png') transparent no-repeat center center;
 }
 
-.tagging-wrapper {  
+.tagging-curtags-wrapper {  
   background-color:#eee;
-  padding:5px 0px 10px 0px;  
+  padding:5px 0px 10px 0px;
+  display:inline-block;
+  width:100%; 
+}
+.tagging-curtags-wrapper label {
+  padding:0px 0px 4px 20px;
+  margin-left:5px;  
+  background:url('tag.png') transparent no-repeat left center;  
 }
 
-.suggestion-tagging-wrapper {
+.tagging-suggestions-wrapper {
   clear:both;
   background-color:#eee;
   padding:10px 0px 5px 0px;
-  
+  display:inline-block;
+  width:100%; 
 }
 
-.suggest-tag-text {
-  background: url('add-suggestion.png') white no-repeat right;  
-  margin:5px 5px 5px 5px;
-  padding:3px 16px 3px 3px;
-  cursor:pointer;
-  -moz-border-radius:4px;
-  border:1px solid grey;
+.tagging-suggestions-wrapper label {
+  padding:0px 0px 4px 2px;
+}
+
+
+/*#tagging-widget-container .tagging-button-container,, #tagging-widget-container .field-prefix*/
+#tagging-widget-container .field-suffix{
+  float:left;
 }

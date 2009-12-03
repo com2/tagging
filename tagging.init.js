@@ -4,6 +4,6 @@
  */
 (function($) {
   $(document).ready(function() {
-    $('input.tagging-widget').tagging();
+    $('input.tagging-widget-input').tagging();
   });
 })(jQuery);
