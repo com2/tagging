@@ -33,7 +33,7 @@ msgstr "Tag entfernen"
 
 #: tagging.module:106
 msgid "Assigned Tags:"
-msgstr "Zugewiesen Tags"
+msgstr "Zugewiesene Tags"
 
 #: tagging.module:111
 msgid "Suggestions"
