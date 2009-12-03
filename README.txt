@@ -40,19 +40,19 @@ Heigher weights, means faster sinking, means the suggestion is not to "important
 
 This way you can include suggestions using opencalais or extractor
 <h3>Theming</h3>
-<h4>tagging_suggestins_alter($suggestions,$vid)</h3>
+<h4>tagging_suggestins_alter($suggestions,$vid)</h4>
 You can alter the suggestions <b>after</b> the hook_tagging_suggestion have been called. Make exclusions, your own stopword or context-sensitive additions.
 
-<h4>theme_tagging_tags_list($suggestions,$vid)</h3>
+<h4>theme_tagging_tags_list($suggestions,$vid)</h4>
 Render the list of tags as HTML. . Every term must be in a <b>div</b> with at least the class "tagging-text".
 
-<h4>theme_tagging_suggestions_list($suggestions,$vid)</h3>
+<h4>theme_tagging_suggestions_list($suggestions,$vid)</h4>
 Render the list of suggestions as HTML. Every suggestion-term must be in a <b>div</b> with at least the class "tagging-suggest-tag".
 
-<h4>theme_tagging_widget</h3>
+<h4>theme_tagging_widget</h4>
 Render the whole tagging_widget. Give it a new layout or a new UX.Render the button which should be shown next to the input field. The input field must have the class "tagging-widget-input-$vid" assigned to it at least.
 
-<h4>theme_tagging_widget_button</h3>
+<h4>theme_tagging_widget_button</h4>
 Render the button which should be shown next to the input field. It must have the class "tagging-button-$vid" assigned to it at least.
 
 <h4>theme_tagging_widget_wrapper</h4>
