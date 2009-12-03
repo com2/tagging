@@ -1,7 +1,7 @@
 /* $Id$ */
 /* $Id$ */
 
-.tag-text {
+.tagging-tag {
   margin:5px 3px 5px 3px;
   cursor:pointer;
   background: url('remove.png') white no-repeat right center;  
@@ -11,15 +11,23 @@
   float:left;
 }
 
-.tag-text a{
+.tagging-suggest-tag {
+  background: url('add.png') white no-repeat right;  
+  margin:5px 5px 5px 5px;
+  padding:3px 18px 3px 3px;
   cursor:pointer;
+  -moz-border-radius:4px;
+  border:1px solid grey;
+  float:left;
 }
 
-#tagging-widget-container .tagging-widget {
+#tagging-widget-container {  
+  clear:both;
+}
+#tagging-widget-container .tagging-widget-input {
   width:150px;
   float:left;
-  margin-top:3px;
-  clear:both;    
+  margin-top:3px;  
 }
 
 
@@ -31,14 +39,19 @@
   background:url('add.png') transparent no-repeat center center;
 }
 
-.tagging-wrapper {  
+.tagging-curtags-wrapper {  
   background-color:#eee;
   padding:5px 0px 10px 0px;
   display:inline-block;
   width:100%; 
 }
+.tagging-curtags-wrapper label {
+  padding:0px 0px 4px 20px;
+  margin-left:5px;  
+  background:url('tag.png') transparent no-repeat left center;  
+}
 
-.suggestion-tagging-wrapper {
+.tagging-suggestions-wrapper {
   clear:both;
   background-color:#eee;
   padding:10px 0px 5px 0px;
@@ -46,22 +59,12 @@
   width:100%; 
 }
 
-.tagging-wrapper label {
-  padding:0px 0px 4px 20px;
-  margin-left:5px;  
-  background:url('tag.png') transparent no-repeat left center;
-  
-}
-
-.suggestion-tagging-wrapper label {
+.tagging-suggestions-wrapper label {
   padding:0px 0px 4px 2px;
 }
 
-.suggest-tag-text {
-  background: url('add.png') white no-repeat right;  
-  margin:5px 5px 5px 5px;
-  padding:3px 18px 3px 3px;
-  cursor:pointer;
-  -moz-border-radius:4px;
-  border:1px solid grey;
+
+/*#tagging-widget-container .tagging-button-container,, #tagging-widget-container .field-prefix*/
+#tagging-widget-container .field-suffix{
+  float:left;
 }

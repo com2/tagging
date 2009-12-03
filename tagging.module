@@ -2,7 +2,7 @@
 // $Id$
 
 /*
- * 
+ * hook_menu
  */
 
 function tagging_menu() {
@@ -22,7 +22,7 @@ function tagging_menu() {
  
 /*
  * Implementing hook_elements
- * Registeringing the new form element, so we can render the tagging form element properly
+ * Registering the new form element, so we can render the tagging form element properly
  */
 function tagging_elements() {
   $type['tagging_widget'] = array(
@@ -68,7 +68,10 @@ function tagging_form_alter(&$form, $form_state, $form_id) {
 function tagging_theme() {
   return array(
     'tagging_widget' => array('arguments' => array('element' => NULL) ),
-    'tagging_suggestions' => array('arguments' => array('suggestions' => array(), 'vid' => NULL) )
+    'tagging_widget_button' => array('arguments' => array('vid' => NULL) ),    
+    'tagging_widget_wrapper' => array('arguments' => array('content' => NULL, 'vid' => NULL) ),
+    'tagging_suggestions_list' => array('arguments' => array('suggestions' => array(), 'vid' => NULL) ),
+    'tagging_tags_list' => array('arguments' => array('tags' => array(), 'vid' => NULL) )
   ); 
 }
 
@@ -78,60 +81,85 @@ function tagging_theme() {
 function theme_tagging_widget($element) { 
   // TODO: Maybe use a file as a template..but otherwise...performance?
   $vid = $element['#vid'];
-  $cur_tags = '';
-  // Lets add the tags to our wrapper. The jquery plugin will pick them up
-  // and bind some event on them, like "remove".
-  if ( $element['#value'] != '' ) {
-    foreach (split(',', $element['#value']) as $term) {
-      // TODO: use # here...but out of any reason it gets encoded to %23 in html
-      $link = l($link, '', array('attributes' => array('title' => t('Remove tag'))));      
-      $cur_tags .= "<div class='tag-text'>$link</div>";
-    }    
-  }
-  $id = "tagging-widget-$vid";
+  $cur_tags = '';  
+
+  $id = "tagging-widget-input-$vid";
   
   // Well this is the original. We actually just need it in the background, so that we 
   // dont need to fight in the validation filter. We can let the normal taxonomy.modul
   // validators and submitters do their job.
   $element['#type'] = 'hidden'; 
   $element['#attributes']['class'] = "tagging-widget-target-$vid";
-  $hidden_original = theme('hidden', $element);  
+  $old_input = theme('hidden', $element);  
   
   // Ok now lets render the input textfield we will use for the tagging
   $element['#type'] = 'textfield';
-  $element['#attributes']['class'] = "tagging-widget $id";
-  $element['#id']= "$id";
-  $element['#title']= "";
-  
-  $element['#field_prefix'] = "<div class='tagging-wrapper tagging-wrapper-$vid'><label>".t('Assigned Tags:')."</label>$cur_tags</div>";
   // Its convention that the tagging-widget-VID class it addid. That vid will be used
   // to get the unique "context" id for all the other wrappers and functions.
-  if ( count($element['#suggestions']) > 0 ) {    
-    $element['#field_suffix'] = "<div class='suggestion-tagging-wrapper suggestion-tagging-wrapper-$vid'><label>"
-                                . t('Suggestions') . ':</label>'.
-                                  theme('tagging_suggestions', $element['#suggestions'], $vid)
-                                  . "</div>";
-  }
-  $output .= theme('textfield', $element);
-  $output .= $hidden_original;   
-  return "<div id='tagging-widget-container'>$output</div>"; 
+  $element['#attributes']['class'] = "tagging-widget-input $id";
+  $element['#id']= "$id";
+  $element['#title']= "";
+  $element['#field_prefix'] = '<div class="taggin-widget-input-wrappper">';
+  $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div>';  
+      
+  $output .= theme('tagging_tags_list',split(',',$element['#value']),$vid)
+            .theme('textfield', $element)
+            .theme('tagging_suggestions_list', $element['#suggestions'], $vid);
+  
+  return theme('tagging_widget_wrapper',$output,$vid); 
+}
+
+/**
+ * Rendering the widget button
+ */
+function theme_tagging_widget_button($vid) {
+  return '<a class="tagging-button-container" href="#" title="'.t('Add').'"><span class="tagging-button tagging-button-'.$vid.'"></span></a>'; 
+}
+
+/**
+ * Rendering the wrapper of the widget
+ */
+function theme_tagging_widget_wrapper($content, $vid) {
+   return "<div id='tagging-widget-container'>$content</div>";
+}
+
+
+/**
+ * Rendering suggestions for a specific vocabulary
+ */
+function theme_tagging_tags_list($tags, $vid) {
+    $cur_tags = '';
+    // they are sorted already
+    foreach ($tags as $term) {
+      if($term == '') {
+        continue;
+      }
+      // TODO: use # here...but out of any reason it gets encoded to %23 in html
+      $term = "<div class='tagging-tag'>".$term."</div>";
+      $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'))));
+      $cur_tags .= $link;
+    }
+    return "<div class='tagging-curtags-wrapper tagging-curtags-wrapper-$vid'><label>".t('Assigned Tags:')."</label>$cur_tags</div>";    
 }
 
 /**
  * Rendering suggestions for a specific vocabulary
  */
-function theme_tagging_suggestions($suggestions, $vid) {
-    $cur_tags = '';
+function theme_tagging_suggestions_list($suggestions, $vid) {
+    $sug_tags = '';
     // they are sorted already
     foreach ($suggestions as $term) {
       if($term['#name'] == '') {
         continue;
       }
       // TODO: use # here...but out of any reason it gets encoded to %23 in html
-      $link = l($term['#name'], '', array('attributes' => array('title' => t('Add tag'))));      
-      $cur_tags .= "<span id='tagging-$vid'class='suggest-tag-text'>$link</span>";
+      $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>".$term['#name']."</div>";
+      $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Add tag'))));
+      $sug_tags .= $link;
     }      
-    return $cur_tags;
+    
+    return "<div class='tagging-suggestions-wrapper tagging-suggestions-wrapper-$vid'><label>"
+                                . t('Suggestions') . ":</label>$sug_tags</div>";
 } 
 
 /*
@@ -162,8 +190,13 @@ function tagging_add_suggestions($element) {
 /*
  * Example implementation of hook_tagging_suggestions * 
  */
-function tagging_tagging_suggestions($vid, $node) {
-  dsm($node);
+function tagging_tagging_suggestions($vid, $node) {  
+  // dont show this, if the example is deactivated
+  /*if(variable_get('tagging_show_suggestion_example', 1) == 0) {
+    dsm(variable_get('tagging_show_suggestion_example', 1));
+    return array();
+  }*/
+  
   $suggestions[] =  array('#name' => 'Drupal', '#weight' => 1);
   $suggestions[] =  array('#name' => $node->title, '#weight' => 10);
   $suggestions[] =  array('#name' => 'Drupal Wiki', '#weight' => 2);
@@ -177,10 +210,6 @@ function tagging_tagging_suggestions($vid, $node) {
  * Adding Javascript-Libraries needed, if a widget has been placed.
  */
 function tagging_widget_javascript($form_element, &$form_state) {
-  // dont show this, if the example is deactivated
-  if(variable_get('tagging_show_suggestion_example', 1) == 0) {
-    return array();
-  }
   drupal_add_css(drupal_get_path('module', 'tagging') .'/tagging.css', 'module');
   drupal_add_js(drupal_get_path('module', 'tagging') .'/tagging.plugin.js', 'module');
   drupal_add_js(drupal_get_path('module', 'tagging') .'/tagging.init.js', 'module');

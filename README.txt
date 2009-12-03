@@ -1,24 +1,24 @@
-<h1> Goals </h1>
+<h2> Goals </h2>
 
-<h2>Usability</h2>
+<h3>Usability</h3>
 This plugin should provide the ability and usability to tag content. Tagging should be fast as hell, it should be inviting. This is one goal.
 
-<h2>On the fly tagging</h2>
+<h3>On the fly tagging</h3>
 Tag content without switiching into the edito mode. Provide easy and fast interfaces for those purposes
 
-<h2>Extensibility</h2>
+<h3>Extensibility</h3>
 This plugin should become very stable and use the current Drupal-API by best practice - as much as possible. Its not the primary goal to have the newest features in here as fast as possible, its more about getting them done right.
 This should provide the ability to be highly extensible, providing a API for other plugins to reuse the UX-Parts and write better Tagging-tools. One of the primary Tools are semantic suggestions for tags
 
-<h2>Tag-Suggestions</h2>
+<h3>Tag-Suggestions</h3>
 This plugin should provide the needed API to let other modules provide suggestions for the most important tags for the current content. The user can be supported to learn, how tagging should work. Also, the user can save a lot of time, because he can simply click on a set of suggested terms, using his mouse. Or remove them - by using his mouse again.
 Suggestions can have weights and therefor are sorted
 
-<h2>Autotagging</h2>
+<h3>Autotagging</h3>
 As a long term goal, based on the suggestions, user should be able to have a "autotag this content" button
 
 
-<h1>Installation</h1>
+<h2>Installation</h2>
 You need JQuery and taxonomy, which are both in the Drupal-Core.
 <ol>
  <li>Just activate the module and then create or edit a tag-Vocabulary.</li>
@@ -27,29 +27,38 @@ You need JQuery and taxonomy, which are both in the Drupal-Core.
  <li>Edit a node - use the new widget</li>
 </ol>
 
-<h2>Note</h2>
+<h3>Note</h3>
 You have to activate the Tagging-Widget for every vocabulary
 
 
-<h1>API</h1>
-<h2>hook_tagging_suggestion($vid, $node)</h2>
+<h2>API</h2>
+<h3>hook_tagging_suggestion($vid, $node)</h3>
 Every time a module gets edited, all registered modules using hook_suggestions are called. They get the current vocabulary ID and the current node as arguments. The hooks are expected to return an array, with a hash for each item inside:
 []['#name'] = "termname"
 []['#weight]= decimal between 1 and 10
 Heigher weights, means faster sinking, means the suggestion is not to "important" :)
 
 This way you can include suggestions using opencalais or extractor
-
-<h2>tagging_suggestins_alter($suggestions,$vid)</h2>
+<h3>Theming</h3>
+<h4>tagging_suggestins_alter($suggestions,$vid)</h3>
 You can alter the suggestions <b>after</b> the hook_tagging_suggestion have been called. Make exclusions, your own stopword or context-sensitive additions.
 
-<h2>theme_tagging_suggestions($suggestions,$vid)</h2>
-Render the list of suggestions as HTML
+<h4>theme_tagging_tags_list($suggestions,$vid)</h3>
+Render the list of tags as HTML. . Every term must be in a <b>div</b> with at least the class "tagging-text".
 
-<h2>theme_tagging_widget</h2>
-Render the whole tagging_widget. Give it a new layout or a new UX.
+<h4>theme_tagging_suggestions_list($suggestions,$vid)</h3>
+Render the list of suggestions as HTML. Every suggestion-term must be in a <b>div</b> with at least the class "tagging-suggest-tag".
 
-<h2>JQuery Plugin: Tagging</h2>
+<h4>theme_tagging_widget</h3>
+Render the whole tagging_widget. Give it a new layout or a new UX.Render the button which should be shown next to the input field. The input field must have the class "tagging-widget-input-$vid" assigned to it at least.
+
+<h4>theme_tagging_widget_button</h3>
+Render the button which should be shown next to the input field. It must have the class "tagging-button-$vid" assigned to it at least.
+
+<h4>theme_tagging_widget_wrapper</h4>
+Render the wrapper of the widget and embed it wherever you like. It must at have the id "tagging-widget-container".
+
+<h3>JQuery Plugin: Tagging</h3>
 $('selectorname-ID').tagging()
 Thats pretty anything you need to initialize any input element on the page. You have to provide some wrappers:
 <ul>
@@ -61,10 +70,10 @@ Thats pretty anything you need to initialize any input element on the page. You 
 </ul>
 <b>The JQuery-Plugin will ge more generic so it can be used more widely. Most of the options which are static right now, should be changeable by options. The current one should be the default</b>
 
-<h1>Contributions / Issues</h1>
+<h2>Contributions / Issues</h2>
 Contributions are highly respected, also feedback on issues or patches. 
 
-<h1>Feature requests</h1>
+<h2>Feature requests</h2>
 Please don't hassle with feature request, but please think about them properly, before you file in a issue-ticket. Please provide a basic outline of what the goal or the benefit of this feature would be. Outline the group of user you think is interested in.
 
 Implement them! :)
