@@ -29,6 +29,7 @@
         bind_button();        
         update_tags();
         bind_enter();
+        check_dublicates();
         
         $(input_sel).val('');
         
@@ -86,10 +87,10 @@
         function tag_exists(tag) {
           var tag = Drupal.checkPlain($.trim(tag));
           var found = false;
-          $(wrapper_sel+' '+tag_sel).each(function() {
-            if($(this).text() === tag) {
+          $(wrapper_sel+' '+tag_sel).each(function() {  
+            if($(this).text() == tag) {
               found = true;
-              return;
+              return;              
             }
           });
           return found;
@@ -154,26 +155,36 @@
           return true;
         } 
         
+         /*
+         * Check for dupblicates in suggestions and assgined tags.
+         * Hide suggestions on match.
+         */
+        function check_dublicates(){
+          $(suggestions_wrapper_sel + ' div' + suggest_sel + ":visble").each(function(){            
+            if( tag_exists($(this).text()) ) {
+              $(this).hide();
+            }
+          });
+        }
         /*
          * Adds the remove-tag methods to the tags in the wrapper.
          */
         function bind_taglist_events() {
           $(wrapper_sel+' div'+tag_sel+':not(div.processed)').each(function() {
-              $(this).addClass('processed');
-              // We use non anonymuos binds to be properly able to unbind them
-              $(this).bind('click',remove_tag_click);              
-            } 
-          );
+            $(this).addClass('processed');
+            // We use non anonymuos binds to be properly able to unbind them
+            $(this).bind('click',remove_tag_click);              
+          }); 
+          
           
           // For suggestion, we only hide tags. When those tags are remove from the tag
           // list, we can simply check for the existence and show them again
           // issue 649312.
           $(suggestions_wrapper_sel+' div'+suggest_sel+':not(div.processed)').each(function() {
-             // We use non anonymuos binds to be properly able to unbind them  
-             $(this).addClass('processed');           
-              $(this).bind('click',add_suggestion_tag_click);
-            } 
-          );
+            // We use non anonymuos binds to be properly able to unbind them  
+            $(this).addClass('processed');           
+            $(this).bind('click',add_suggestion_tag_click);
+          });
         }
         
         /*
@@ -183,8 +194,9 @@
           $(this).addClass('processed');
           tag = $(this).text();
           // skip, if this tag is already assigned
-          if(tag_exists(tag))
+          if (tag_exists(tag)) {
             return false;
+          }  
           add_tag(tag); 
           hide_tag(this); 
           return false;
