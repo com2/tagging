@@ -138,7 +138,8 @@ function theme_tagging_tags_list($tags, $vid) {
         continue;
       }
       // TODO: use # here...but out of any reason it gets encoded to %23 in html
-      $term = "<div class='tagging-tag'>".$term."</div>";
+      // using trim here, as mostly the old tagging system was "one, two, three"..
+      $term = "<div class='tagging-tag'>".trim($term)."</div>";
       $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'))));
       $cur_tags .= $link;
     }
@@ -156,7 +157,7 @@ function theme_tagging_suggestions_list($suggestions, $vid) {
         continue;
       }
       // TODO: use # here...but out of any reason it gets encoded to %23 in html
-      $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>".$term['#name']."</div>";
+      $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>".trim($term['#name'])."</div>";
       $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Add tag'))));
       $sug_tags .= $link;
     }      
@@ -206,7 +207,7 @@ function tagging_tagging_suggestions($vid, $node) {
   }  
   
   // well and thats the way we use the API. Some simple short lines 
-  if(module_exists(extractor)) {
+  if(module_exists('extractor')) {
      $terms = extractor_extract($node->body);
 
     $result = array();
