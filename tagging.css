@@ -28,12 +28,12 @@ clear:both;
 #tagging-widget-container {  
   clear:both;
 }
+
 #tagging-widget-container .tagging-widget-input {
   width:150px;
   float:left;
   margin:3px 0px 3px 0px;  
 }
-
 
 .tagging-button {
   float:left;
@@ -53,6 +53,7 @@ clear:both;
   padding:0px 0px 4px 20px;
   margin-left:5px;  
   background:url('tag.png') transparent no-repeat left center;  
+  display:block;
 }
 
 .tagging-suggestions-wrapper {
@@ -65,6 +66,7 @@ clear:both;
 
 .tagging-suggestions-wrapper label {
   padding:0px 0px 4px 2px;
+  display:block;
 }
 
 

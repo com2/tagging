@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2009-12-04 05:20+0100\n"
-"PO-Revision-Date: 2009-12-04 05:21+0100\n"
+"PO-Revision-Date: 2009-12-04 10:20+0100\n"
 "Last-Translator: Eugen Mayer <mayer@impressive-media.de>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr "Tag entfernen"
 
 #: tagging.module:145
 msgid "Assigned Tags:"
-msgstr "Zugewiesene Tags"
+msgstr "Zugewiesene Tags:"
 
 #: tagging.module:160
 msgid "Add tag"
