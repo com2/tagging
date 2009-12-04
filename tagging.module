@@ -84,7 +84,8 @@ function theme_tagging_widget($element) {
   $cur_tags = '';  
 
   $id = "tagging-widget-input-$vid";
-  
+  $fieldset['#title'] = $element['#title']; 
+  $fieldset['#collapsed'] = false;
   // Well this is the original. We actually just need it in the background, so that we 
   // dont need to fight in the validation filter. We can let the normal taxonomy.modul
   // validators and submitters do their job.
@@ -99,13 +100,15 @@ function theme_tagging_widget($element) {
   $element['#attributes']['class'] = "tagging-widget-input $id";
   $element['#id']= "$id";
   $element['#title']= "";
-  $element['#field_prefix'] = '<div class="taggin-widget-input-wrappper">';
+  $element['#description'] = "Type and press enter to add the tag";
+  $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper">';
   $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div>';  
       
   $output .= theme('tagging_tags_list',split(',',$element['#value']),$vid)
             .theme('textfield', $element)
             .theme('tagging_suggestions_list', $element['#suggestions'], $vid);
-  
+  $fieldset['#value'] = $output;
+  $output = theme('fieldset',$fieldset);
   return theme('tagging_widget_wrapper',$output,$vid); 
 }
 

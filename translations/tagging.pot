@@ -3,15 +3,15 @@
 # LANGUAGE translation of Drupal (general)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
+#  tagging.admin.inc: n/a
 #  tagging.module: n/a
 #  tagging.info: n/a
-#  tagging.plugin.js: n/a
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-12-03 10:32+0100\n"
+"POT-Creation-Date: 2009-12-04 04:45+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -19,6 +19,22 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: tagging.admin.inc:9
+msgid "Maximum suggestions"
+msgstr ""
+
+#: tagging.admin.inc:10
+msgid "Maximum suggestions to show in the user-interface. Please use a number"
+msgstr ""
+
+#: tagging.admin.inc:17
+msgid "Provide example suggestions (example implementation of hook_tagging_suggestion)"
+msgstr ""
+
+#: tagging.admin.inc:18
+msgid "This will show a set of static suggestion in the user-interface. This should be only an example, you have to implement your own proper suggestion handler afterward and deacativate this one!"
+msgstr ""
 
 #: tagging.module:46
 msgid "Tagging Widget"
@@ -28,20 +44,24 @@ msgstr ""
 msgid "Use the visual tagging-widget, when this taxonomy is shown to the user"
 msgstr ""
 
-#: tagging.module:87
+#: tagging.module:119
+msgid "Add"
+msgstr ""
+
+#: tagging.module:142
 msgid "Remove tag"
 msgstr ""
 
-#: tagging.module:106
+#: tagging.module:145
 msgid "Assigned Tags:"
 msgstr ""
 
-#: tagging.module:111
-msgid "Suggestions"
+#: tagging.module:160
+msgid "Add tag"
 msgstr ""
 
-#: tagging.module:131
-msgid "Add tag"
+#: tagging.module:165
+msgid "Suggestions"
 msgstr ""
 
 #: tagging.module:12
@@ -62,9 +82,5 @@ msgstr ""
 
 #: tagging.info:0
 msgid "Taxonomy"
-msgstr ""
-
-#: tagging.plugin.js:0
-msgid "Add"
 msgstr ""
 

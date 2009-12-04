@@ -14,7 +14,7 @@ function tagging_admin_settings() {
   
   $form['tagging_show_suggestion_example'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Provide example suggestion'),
+      '#title' => t('Provide example suggestions (example implementation of hook_tagging_suggestion)'),
       '#description' => t('This will show a set of static suggestion in the user-interface. This should be only an example, you have to implement your own proper suggestion handler afterward and deacativate this one!'),
       '#default_value' => variable_get('tagging_show_suggestion_example', 1)
   );
