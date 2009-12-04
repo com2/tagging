@@ -7,7 +7,7 @@ function tagging_admin_settings() {
   $form['tagging_show_max_suggestion'] = array(
       '#type' => 'textfield',
       '#title' => t('Maximum suggestions'),
-      '#description' => t('Maximum suggestions to show in the user-interface. Please use a number'),      
+      '#description' => t('Maximum suggestions to show in the user-interface. Please use a number. Put "0" for no limit'),      
       '#valid' => 'integer',
       '#default_value' => variable_get('tagging_show_max_suggestion', 20)
   );

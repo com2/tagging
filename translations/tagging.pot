@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-12-04 04:45+0100\n"
+"POT-Creation-Date: 2009-12-04 05:20+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -25,7 +25,7 @@ msgid "Maximum suggestions"
 msgstr ""
 
 #: tagging.admin.inc:10
-msgid "Maximum suggestions to show in the user-interface. Please use a number"
+msgid "Maximum suggestions to show in the user-interface. Please use a number. Put \"0\" for no limit"
 msgstr ""
 
 #: tagging.admin.inc:17

@@ -10,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-12-04 04:45+0100\n"
-"PO-Revision-Date: 2009-12-04 04:46+0100\n"
+"POT-Creation-Date: 2009-12-04 05:20+0100\n"
+"PO-Revision-Date: 2009-12-04 05:21+0100\n"
 "Last-Translator: Eugen Mayer <mayer@impressive-media.de>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -24,8 +24,8 @@ msgid "Maximum suggestions"
 msgstr "Max. Anzahl an Vorschläge"
 
 #: tagging.admin.inc:10
-msgid "Maximum suggestions to show in the user-interface. Please use a number"
-msgstr "Maximale Anzahl an Vorschlägen, welche angezeigt werden sollen"
+msgid "Maximum suggestions to show in the user-interface. Please use a number. Put \"0\" for no limit"
+msgstr "Maximale Anzahl an Vorschlägen, welche angezeigt werden sollen. '0' für 'kein Limit'"
 
 #: tagging.admin.inc:17
 msgid "Provide example suggestions (example implementation of hook_tagging_suggestion)"
