@@ -1,3 +1,30 @@
+<h2> Features yet implemented </h2>
+<ul>
+ <li><b>You get tag suggestions based on your current content!*</b></li>
+ <li> Adding a suggestion using one-click</li>
+ <li> Tagging using a 'nicer' and easier visual interface.</li>
+ <li> <b>No comma-seperated lists anymore!</b></li>
+ <li> Using mouse to one-click-remove assigned tags.</li> 
+ <li> Supports several tagging-vocabularies on one node-edit form</li> 
+ <li> Use the simple suggestion-API or the alter methods to add new suggestions</li> 
+ <li> Theme the whole output</li> 
+ <li> Reuse the form-element 'tagging_widget'</li>
+</ul>
+
+<h2>Installation</h2>
+You need JQuery and taxonomy, which are both in the Drupal-Core.
+<ol>
+ <li>Just activate the module and then create or edit a tag-Vocabulary.</li>
+ <li>Got to the consiguration page if you like. Disable or enable to suggestions example and set the maximum amount of suggestions in general</li>
+ <li>Check the checkbox "Tagggin Widget"</li>
+ <li>Edit a node - use the new widget</li>
+ <li>*(optional) If you want suggestion based on your content, you have to install extractor. It has not been published yet on drupal, hopefuly alexb allowes me to redistribute it with tagging. Anyway you can grab it as a module here http://github.com/developmentseed/extractor/archives/master
+<ol>
+<li>(You can also use git 'git clone git://github.com/developmentseed/extractor.git extractor')</li>
+<li>Just enable the module - your done.</li>
+</ol>
+</ol>
+
 <h2> Goals </h2>
 
 <h3>Usability</h3>
@@ -17,15 +44,6 @@ Suggestions can have weights and therefor are sorted
 <h3>Autotagging</h3>
 As a long term goal, based on the suggestions, user should be able to have a "autotag this content" button
 
-
-<h2>Installation</h2>
-You need JQuery and taxonomy, which are both in the Drupal-Core.
-<ol>
- <li>Just activate the module and then create or edit a tag-Vocabulary.</li>
- <li>Got to the consiguration page if you like. Disable or enable to suggestions example and set the maximum amount of suggestions in general</li>
- <li>Check the checkbox "Tagggin Widget"</li>
- <li>Edit a node - use the new widget</li>
-</ol>
 
 <h3>Note</h3>
 You have to activate the Tagging-Widget for every vocabulary

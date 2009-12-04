@@ -185,7 +185,9 @@ function tagging_add_suggestions($element) {
   // Iam not going to hold the devs hand and validate if we got a valid array with #name / #weight
   uasort($suggestions,'element_sort');  
   // Only show a maximum ammount of suggesitons
-  $suggestions = array_slice($suggestions,0, variable_get('tagging_show_max_suggestion', 20)+1);
+  if(variable_get('tagging_show_max_suggestion', 20) > 0) {
+	  $suggestions = array_slice($suggestions,0, variable_get('tagging_show_max_suggestion', 20));
+  }
   $element['#suggestions'] = $suggestions;
   return $element;
 }
@@ -194,16 +196,25 @@ function tagging_add_suggestions($element) {
  * Example implementation of hook_tagging_suggestions * 
  */
 function tagging_tagging_suggestions($vid, $node) {  
+  $suggestions = array();
   // dont show this, if the example is deactivated
-  if(variable_get('tagging_show_suggestion_example', 1) == 0) {
-    return array();
-  }
+  if(variable_get('tagging_show_suggestion_example', 1) == 1) {
+    $suggestions[] =  array('#name' => 'Drupal', '#weight' => 1);
+    $suggestions[] =  array('#name' => $node->title, '#weight' => 10);
+    $suggestions[] =  array('#name' => 'Drupal Wiki', '#weight' => 2);
+    $suggestions[] =  array('#name' => 'Impressive.media GbR', '#weight' => 3);  
+  }  
   
-  $suggestions[] =  array('#name' => 'Drupal', '#weight' => 1);
-  $suggestions[] =  array('#name' => $node->title, '#weight' => 10);
-  $suggestions[] =  array('#name' => 'Drupal Wiki', '#weight' => 2);
-  $suggestions[] =  array('#name' => 'Impressive.media GbR', '#weight' => 3);
+  // well and thats the way we use the API. Some simple short lines 
+  if(module_exists(extractor)) {
+     $terms = extractor_extract($node->body);
 
+    $result = array();
+    foreach($terms as $key => $term) {
+      $result[] = array('#weight' => (1/$key), '#name' => $term);
+    }
+    $suggestions = $result;
+  }
   return $suggestions;
 }
 
