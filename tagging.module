@@ -27,8 +27,8 @@ function tagging_menu() {
 function tagging_elements() {
   $type['tagging_widget'] = array(
     '#input' => TRUE,
-    '#after_build' => array('tagging_widget_javascript'),   
-    '#process' => array('tagging_add_suggestions'),   
+    '#after_build' => array('_tagging_widget_javascript'),   
+    '#process' => array('_tagging_add_suggestions'),   
     '#default_value' => -1,
   );
   return $type;
@@ -150,7 +150,7 @@ function theme_tagging_tags_list($tags, $vid) {
  * Rendering suggestions for a specific vocabulary
  */
 function theme_tagging_suggestions_list($suggestions, $vid) {
-    $sug_tags = '';
+    $suggested_tags = '';
     // they are sorted already
     foreach ($suggestions as $term) {
       if($term['#name'] == '') {
@@ -159,42 +159,23 @@ function theme_tagging_suggestions_list($suggestions, $vid) {
       // TODO: use # here...but out of any reason it gets encoded to %23 in html
       $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>".trim($term['#name'])."</div>";
       $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Add tag'))));
-      $sug_tags .= $link;
+      $suggested_tags .= $link;
     }      
-    
-    return "<div class='tagging-suggestions-wrapper tagging-suggestions-wrapper-$vid'><label>"
-                                . t('Suggestions') . ":</label>$sug_tags</div>";
+    // if we have any suggestions
+    if($suggested_tags != '') {
+      return "<div class='tagging-suggestions-wrapper tagging-suggestions-wrapper-$vid'><label>"
+                                . t('Suggestions') . ":</label>$suggested_tags</div>";
+    }
+    // We have no suggestions, so no need to show any output  
+    return '';
 } 
 
 /*
- * Defining new hook: hook_tagging_suggestion
- * Modules can use this hook to implement their methods to provide suggestions for tagging 
- * the current node
- */
-function tagging_add_suggestions($element) {
-  // TODO: Quite expensive here. Should we only fetch the body? This might
-  // change in the future
-  $node = node_load($element['#nid']);
-  $suggestions = module_invoke_all('tagging_suggestions', $element['#vid'], $node);  
-  drupal_alter('tagging_suggestions', $suggestions);
-
-  // Validation
-  if ( !is_array($suggestions) ) {
-    $suggestions = array();
-    watchdog(WATCHDOG_WARNING, 'Tagging: Could not parse suggestion array - maybe some hooks are out of bound?');
-  }
-  // Iam not going to hold the devs hand and validate if we got a valid array with #name / #weight
-  uasort($suggestions,'element_sort');  
-  // Only show a maximum ammount of suggesitons
-  if(variable_get('tagging_show_max_suggestion', 20) > 0) {
-	  $suggestions = array_slice($suggestions,0, variable_get('tagging_show_max_suggestion', 20));
-  }
-  $element['#suggestions'] = $suggestions;
-  return $element;
-}
-
-/*
  * Example implementation of hook_tagging_suggestions * 
+ * @vid: This is the vid the suggestions have been called for. You can use this to decide whether you 
+ *       want to suggest something or not for this vocabulary
+ * @node: This is the complete expanded node object. Use this to e.g. base your suggestions on the body
+ *        of the node or the title or whatever you wish on      
  */
 function tagging_tagging_suggestions($vid, $node) {  
   $suggestions = array();
@@ -208,7 +189,7 @@ function tagging_tagging_suggestions($vid, $node) {
   
   // well and thats the way we use the API. Some simple short lines 
   if(module_exists('extractor')) {
-     $terms = extractor_extract($node->body);
+    $terms = extractor_extract($node->body);
 
     $result = array();
     foreach($terms as $key => $term) {
@@ -220,10 +201,44 @@ function tagging_tagging_suggestions($vid, $node) {
 }
 
 /*
+ * Defining new hook: hook_tagging_suggestion
+ * Modules can use this hook to implement their methods to provide suggestions for tagging 
+ * the current node
+ */
+function _tagging_add_suggestions($element) {
+  // TODO: Quite expensive here. Should we only fetch the body? This might
+  // change in the future
+  $node = node_load($element['#nid']);
+  /*  
+  * @vid: This is the vid the suggestions have been called for. You can use this to decide whether you 
+  *       want to suggest something or not for this vocabulary
+  * @node: This is the complete expanded node object. Use this to e.g. base your suggestions on the body
+  *        of the node or the title or whatever you wish on      
+  */
+  $suggestions = module_invoke_all('tagging_suggestions', $element['#vid'], $node);  
+  drupal_alter('tagging_suggestions', $suggestions);
+
+  // Validation
+  if ( !is_array($suggestions) ) {
+    $suggestions = array();
+    watchdog(WATCHDOG_WARNING, 'Tagging: Could not parse suggestion array - maybe some hooks are out of bound?');
+  }
+  // Iam not going to hold the devs hand and validate if we got a valid array with #name / #weight
+  uasort($suggestions,'element_sort');  
+  // Only show a maximum ammount of suggesitons
+  if(variable_get('tagging_show_max_suggestion', 20) > 0) {
+    $suggestions = array_slice($suggestions,0, variable_get('tagging_show_max_suggestion', 20));
+  }
+  $element['#suggestions'] = $suggestions;
+  return $element;
+}
+
+
+/*
  * Implementing #process of the form element tagging_widget.
  * Adding Javascript-Libraries needed, if a widget has been placed.
  */
-function tagging_widget_javascript($form_element, &$form_state) {
+function _tagging_widget_javascript($form_element, &$form_state) {
   drupal_add_css(drupal_get_path('module', 'tagging') .'/tagging.css', 'module');
   drupal_add_js(drupal_get_path('module', 'tagging') .'/tagging.plugin.js', 'module');
   drupal_add_js(drupal_get_path('module', 'tagging') .'/tagging.init.js', 'module');

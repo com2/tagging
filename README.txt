@@ -11,6 +11,15 @@
  <li> Reuse the form-element 'tagging_widget'</li>
 </ul>
 
+<b>You can see how the plugin works - just look into this <a href="http://wiki.impressive-media.de/doc/tagging-unleashed-drupal-module-implements-easy-tagging-with-suggestions?fullsize=1">video-podcast</a></b>
+
+<h2> Compatibility / Dependencies </h2>
+<h3>Server Dependencies</h3>
+none (optional extractor)
+<h3>Client Browser Dependencies</h3>
+ - Javascript
+ - <b>This plugin works in: IE6, IE7, IE8, FF(3.0.x - 3.5.x), Safari, Opera(9.63)</b>
+
 <h2>Installation</h2>
 You need JQuery and taxonomy, which are both in the Drupal-Core.
 <ol>
@@ -18,9 +27,8 @@ You need JQuery and taxonomy, which are both in the Drupal-Core.
  <li>Got to the consiguration page if you like. Disable or enable to suggestions example and set the maximum amount of suggestions in general</li>
  <li>Check the checkbox "Tagggin Widget"</li>
  <li>Edit a node - use the new widget</li>
- <li>*(optional) If you want suggestion based on your content, you have to install extractor. It has not been published yet on drupal, hopefuly alexb allowes me to redistribute it with tagging. Anyway you can grab it as a module here http://github.com/developmentseed/extractor/archives/master
+ <li>*(optional) If you want a expamle suggestion-implementation based on your content, you have to install extractor. http://drupal.org/project/extractor
 <ol>
-<li>(You can also use git 'git clone git://github.com/developmentseed/extractor.git extractor')</li>
 <li>Just enable the module - your done.</li>
 </ol>
 </ol>
@@ -50,16 +58,18 @@ You have to activate the Tagging-Widget for every vocabulary
 
 
 <h2>API</h2>
-<h3>hook_tagging_suggestion($vid, $node)</h3>
+<h3>hook_tagging_suggestions($vid, $node)</h3>
 Every time a module gets edited, all registered modules using hook_suggestions are called. They get the current vocabulary ID and the current node as arguments. The hooks are expected to return an array, with a hash for each item inside:
 []['#name'] = "termname"
 []['#weight]= decimal between 1 and 10
 Heigher weights, means faster sinking, means the suggestion is not to "important" :)
 
+You can use the $vid to only trigger on specific vocabulars only.
+<h4>tagging_suggestions_alter($suggestions,$vid)</h4>
+You can alter the suggestions <b>after</b> the hook_tagging_suggestion have been called. Make exclusions, your own stopword or context-sensitive additions.
+
 This way you can include suggestions using opencalais or extractor
 <h3>Theming</h3>
-<h4>tagging_suggestins_alter($suggestions,$vid)</h4>
-You can alter the suggestions <b>after</b> the hook_tagging_suggestion have been called. Make exclusions, your own stopword or context-sensitive additions.
 
 <h4>theme_tagging_tags_list($suggestions,$vid)</h4>
 Render the list of tags as HTML. . Every term must be in a <b>div</b> with at least the class "tagging-text".
