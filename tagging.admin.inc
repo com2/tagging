@@ -2,8 +2,7 @@
 /*
  * Providing a administration interface for tagging.
  */
-function tagging_admin_settings() {
-  $options = node_get_types('names');
+function tagging_admin_settings() {  
   $form['tagging_show_max_suggestion'] = array(
       '#type' => 'textfield',
       '#title' => t('Maximum suggestions'),
