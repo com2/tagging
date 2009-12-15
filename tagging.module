@@ -39,17 +39,6 @@ function tagging_elements() {
  * 
  */
 function tagging_form_alter(&$form, $form_state, $form_id) {
-  // Showing taxonomy settings. Lets show our settings also.
-  if ($form_id === 'taxonomy_form_vocabulary') {
-    $form['settings']['tagging_inject'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Tagging Widget'),
-      '#weight' => 10,
-      '#default_value' => variable_get('tagging_inject_'. $form['vid']['#value'], 0),
-      '#description' => t('Use the visual tagging-widget, when this taxonomy is shown to the user'),
-    );
-    $form['#submit'][] = 'tagging_form_vocabulary_submit';
-  }
   // Check if we are editting a node and we actually have a tag taxonomy.
   if ($form['#id'] === 'node-form' && isset($form['taxonomy']['tags'])) {  
     foreach ($form['taxonomy']['tags'] as $id => $values) {
@@ -60,6 +49,21 @@ function tagging_form_alter(&$form, $form_state, $form_id) {
       }
     }
   }
+}
+
+/**
+ * Implementation of hook_form_ID_alter.
+ * 
+ */
+function tagging_form_taxonomy_form_vocabulary_alter(&$form, $form_state ) {
+  $form['settings']['tagging_inject'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Tagging Widget'),
+    '#weight' => 10,
+    '#default_value' => variable_get('tagging_inject_'. $form['vid']['#value'], 0),
+    '#description' => t('Use the visual tagging-widget, when this taxonomy is shown to the user'),
+  );
+  $form['#submit'][] = 'tagging_form_vocabulary_submit';
 }
 
 /*
