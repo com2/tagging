@@ -45,6 +45,10 @@ msgstr "Tagging Widget"
 msgid "Use the visual tagging-widget, when this taxonomy is shown to the user"
 msgstr "Verwende das tagging-wdiget, wenn dieses Vokabular dem Benutzer angezeigt wird"
 
+#: tagging.module:107
+msgid "Type and press enter to add the tag"
+msgstr "Text eingeben und Enter betätigen"
+
 #: tagging.module:119
 msgid "Add"
 msgstr "Hinzufügen"
