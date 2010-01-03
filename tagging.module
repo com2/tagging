@@ -104,7 +104,7 @@ function theme_tagging_widget($element) {
   $element['#attributes']['class'] = "tagging-widget-input $id";
   $element['#id']= "$id";
   $element['#title']= "";
-  $element['#description'] = "Type and press enter to add the tag";
+  $element['#description'] = t("Type and press enter to add the tag");
   $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper">';
   $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div>';
 
