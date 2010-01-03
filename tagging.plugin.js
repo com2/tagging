@@ -156,15 +156,21 @@
         } 
         
          /*
-         * Check for dupblicates in suggestions and assgined tags.
+         * Check for dupblicates in suggestions and allready assgined tags.
          * Hide suggestions on match.
          */
         function check_dublicates(){
-          $(suggestions_wrapper_sel + ' div' + suggest_sel + ":visble").each(function(){            
-            if( tag_exists($(this).text()) ) {
-              $(this).hide();
-            }
-          });
+            // TODO: Using this optimized selector somehow interfers with the
+            // fckeditor as a module. Yet no idea what happens.
+            // sel = suggestions_wrapper_sel + ' div' + suggest_sel + ":visble";
+            
+            // Fallback selector
+            sel = suggestions_wrapper_sel + ' div' + suggest_sel;
+            $(sel).each(function(){            
+              if( tag_exists($(this).text()) ) {
+                $(this).hide();
+              }
+            });
         }
         /*
          * Adds the remove-tag methods to the tags in the wrapper.
@@ -172,16 +178,15 @@
         function bind_taglist_events() {
           $(wrapper_sel+' div'+tag_sel+':not(div.processed)').each(function() {
             $(this).addClass('processed');
-            // We use non anonymuos binds to be properly able to unbind them
+            // We use non anonymuos binds to be properly able to unbind them.
             $(this).bind('click',remove_tag_click);              
           }); 
           
           
           // For suggestion, we only hide tags. When those tags are remove from the tag
-          // list, we can simply check for the existence and show them again
-          // issue 649312.
+          // list, we can simply check for the existence and show them again          
           $(suggestions_wrapper_sel+' div'+suggest_sel+':not(div.processed)').each(function() {
-            // We use non anonymuos binds to be properly able to unbind them  
+            // We use non anonymuos binds to be able to properly unbind them  
             $(this).addClass('processed');           
             $(this).bind('click',add_suggestion_tag_click);
           });
@@ -208,6 +213,7 @@
         function remove_tag_click() { 
           remove_tag(this); return false;
         }           
+        
         /*
          * During updating of the tags, we unbind the events to avoid
          * sideffects.
