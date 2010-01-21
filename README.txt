@@ -24,8 +24,8 @@ none (optional extractor)
 You need JQuery and taxonomy, which are both in the Drupal-Core.
 <ol>
  <li>Just activate the module and then create or edit a tag-Vocabulary.</li>
- <li>Got to the consiguration page if you like. Disable or enable to suggestions example and set the maximum amount of suggestions in general</li>
- <li>Check the checkbox "Tagggin Widget"</li>
+ <li>Now check the checkbox "Tagggin Widget" in the vocabulary settings</li>
+ <li>Got to the configuration page if you like. Disable or enable to the suggestions example and set the maximum amount of suggestions to show</li>
  <li>Edit a node - use the new widget</li>
  <li>*(optional) If you want a expamle suggestion-implementation based on your content, you have to install extractor. http://drupal.org/project/extractor
 <ol>
@@ -65,10 +65,11 @@ Every time a module gets edited, all registered modules using hook_suggestions a
 Heigher weights, means faster sinking, means the suggestion is not to "important" :)
 
 You can use the $vid to only trigger on specific vocabulars only.
+This way you can include suggestions using opencalais or extractor.
 <h4>tagging_suggestions_alter($suggestions,$vid)</h4>
 You can alter the suggestions <b>after</b> the hook_tagging_suggestion have been called. Make exclusions, your own stopword or context-sensitive additions.
 
-This way you can include suggestions using opencalais or extractor
+
 <h3>Theming</h3>
 
 <h4>theme_tagging_tags_list($suggestions,$vid)</h4>
@@ -96,7 +97,7 @@ Thats pretty anything you need to initialize any input element on the page. You 
 <li>.suggestion-tagging-wrapper-ID: where should the suggested tags get shown</li>
 <li>.tagging-widget-target-ID: Where should the tags be saved in. Most probably some vocab-edit-field (hidden)</li>
 </ul>
-<b>The JQuery-Plugin will ge more generic so it can be used more widely. Most of the options which are static right now, should be changeable by options. The current one should be the default</b>
+<b>The JQuery-Plugin will get more generic so it can be used more widely. Most of the options which are static right now, should be changeable by options. The current one should be the default</b>
 
 <h2>Contributions / Issues</h2>
 Contributions are highly respected, also feedback on issues or patches. 
