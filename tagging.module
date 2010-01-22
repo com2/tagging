@@ -103,11 +103,12 @@ function theme_tagging_widget($element) {
   // to get the unique "context" id for all the other wrappers and functions.
   $element['#attributes']['class'] = "tagging-widget-input $id";
   $element['#id']= "$id";
-  $element['#title']= "";
-  $element['#description'] = t("Type and press enter to add the tag");
-  $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper">';
-  $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div>';
 
+  $element['#title']= "";
+
+  $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper">';
+  $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div><span class="tagging-vocab-descr">'.$element['#description'].'</span>';
+  $element['#description'] = ""; // t("Type and press enter to add the tag");
   $output .= theme('tagging_tags_list',split(',',$element['#value']),$vid)
             .theme('textfield', $element)
             .theme('tagging_suggestions_list', $element['#suggestions'], $vid);
