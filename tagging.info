@@ -1,11 +1,8 @@
-; $Id: tagging.info,v 1.9 2009/12/04 09:42:26 eugenmayer Exp $
+; $Id$
 name = Tagging
 description = This widget is replacing the default Drupal-Tagging-Interface with a more visual driven one, to make tagging even easier. (by Impressive.media)
-package = "Taxonomy"
+package = "Drupal Wiki"
 core = 6.x
 dependencies[] = taxonomy
-; Information added by drupal.org packaging script on 2009-12-04
-version = "6.x-1.0-beta5"
 core = "6.x"
 project = "tagging"
-datestamp = "1259920274"
