@@ -103,12 +103,11 @@ function theme_tagging_widget($element) {
   // to get the unique "context" id for all the other wrappers and functions.
   $element['#attributes']['class'] = "tagging-widget-input $id";
   $element['#id']= "$id";
-
   $element['#title']= "";
-
+  $element['#description'] = t("Type and press enter to add the tag");
   $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper">';
-  $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div><span class="tagging-vocab-descr">'.$element['#description'].'</span>';
-  $element['#description'] = ""; // t("Type and press enter to add the tag");
+  $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div>';
+
   $output .= theme('tagging_tags_list',split(',',$element['#value']),$vid)
             .theme('textfield', $element)
             .theme('tagging_suggestions_list', $element['#suggestions'], $vid);
@@ -192,6 +191,16 @@ function tagging_tagging_suggestions($vid, $node) {
     $suggestions[] =  array('#name' => 'Impressive.media GbR', '#weight' => 3);
   }
 
+  // Thats the way we use the API. Some simple short lines.
+  if(module_exists('extractor')) {
+    $terms = extractor_extract($node->body);
+
+    $result = array();
+    foreach($terms as $key => $term) {
+      $result[] = array('#weight' => (1/$key), '#name' => $term);
+    }
+    $suggestions = $result;
+  }
   return $suggestions;
 }
 
@@ -211,7 +220,6 @@ function _tagging_add_suggestions($element) {
   *        of the node or the title or whatever you wish on
   */
   $suggestions = module_invoke_all('tagging_suggestions', $element['#vid'], $node);
-
   drupal_alter('tagging_suggestions', $suggestions);
 
   // Validation
@@ -221,7 +229,6 @@ function _tagging_add_suggestions($element) {
   }
   // Iam not going to hold the devs hand and validate if we got a valid array with #name / #weight
   uasort($suggestions,'element_sort');
-
   // Only show a maximum ammount of suggesitons
   if(variable_get('tagging_show_max_suggestion', 20) > 0) {
     $suggestions = array_slice($suggestions,0, variable_get('tagging_show_max_suggestion', 20));

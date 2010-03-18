@@ -74,12 +74,3 @@ clear:both;
 #tagging-widget-container .field-suffix{
   float:left;
 }
-
-.tagging-vocab-descr {
-	width:auto;
-	color:grey;
-	font-size:0.8em;
-	margin-left:10px;
-	top:2px;
-	position:relative;
-}

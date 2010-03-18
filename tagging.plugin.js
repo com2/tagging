@@ -30,7 +30,6 @@
         update_tags();
         bind_enter();
         check_dublicates();
-        hide_if_empty();
         
         $(input_sel).val('');
         
@@ -39,8 +38,6 @@
          * Adds a tag to the visual list and to the hidden input field (target).
          */
         function add_tag(tag, autoupdate) {
-          $(wrapper_sel+':hidden').show();
-          
           tag = Drupal.checkPlain(tag);
           $(wrapper_sel).append("<div class='"+tag_class+"'>"+tag+"</div>");
           if(autoupdate) {
@@ -57,7 +54,6 @@
           update_tags();
           bind_taglist_events();
           reshow_suggestion_if_exists($(e).text());
-          hide_if_empty();
         }
         
         /*
@@ -216,16 +212,7 @@
          */   
         function remove_tag_click() { 
           remove_tag(this); return false;
-        }
-        
-        /*
-         * Hides the tags wrapper if no tags assigened yet 
-         */
-        function hide_if_empty() {
-          if($(wrapper_sel+' '+tag_sel).length == 0) {
-            $(wrapper_sel).hide();
-          }
-        }
+        }           
         
         /*
          * During updating of the tags, we unbind the events to avoid
@@ -255,7 +242,7 @@
         function get_context(classes) {
           context = null;
            $(classes.split(' ')).each(function(){ 
-              match = this.match(/tagging[-]widget[-]input[-](\d)+/i);
+              match = this.match(/tagging[-]widget[-]input[-](\d+)/i);
               if (match != null) {
                 context =  match[1];
               }           
