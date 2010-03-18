@@ -242,7 +242,7 @@
         function get_context(classes) {
           context = null;
            $(classes.split(' ')).each(function(){ 
-              match = this.match(/tagging[-]widget[-]input[-](\d)+/i);
+              match = this.match(/tagging[-]widget[-]input[-](\d+)/i);
               if (match != null) {
                 context =  match[1];
               }           
