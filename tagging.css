@@ -1,18 +1,20 @@
-/* $Id:$ */
-/* $Id: active_tags.css,v 1.1.2.1 2008/09/12 17:05:03 darrenmuk Exp $ */
+/* $Id:*/
+/* Author: Eugen Mayer (http://kontextwork.de)
+ * Copyright 2010
+ */
 
 .tagging-tag {
   margin:5px 3px 5px 3px;
   cursor:pointer;
-  background: url('remove.png') white no-repeat right center;  
+  background: url('remove.png') white no-repeat right center;
   padding:3px 19px 3px 3px;
   border:1px solid grey;
-  -moz-border-radius:4px; 
+  -moz-border-radius:4px;
   float:left;
 }
 
 .tagging-suggest-tag {
-  background: url('add.png') white no-repeat right;  
+  background: url('add.png') white no-repeat right;
   margin:5px 5px 5px 5px;
   padding:3px 18px 3px 3px;
   cursor:pointer;
@@ -25,14 +27,14 @@
 	padding:0px;
 clear:both;
 }
-#tagging-widget-container {  
+#tagging-widget-container {
   clear:both;
 }
 
 #tagging-widget-container .tagging-widget-input {
   width:150px;
   float:left;
-  margin:3px 0px 3px 0px;  
+  margin:3px 0px 3px 0px;
 }
 
 .tagging-button {
@@ -43,16 +45,16 @@ clear:both;
   background:url('add.png') transparent no-repeat center center;
 }
 
-.tagging-curtags-wrapper {  
+.tagging-curtags-wrapper {
   background-color:#eee;
   padding:5px 0px 10px 0px;
   display:inline-block;
-  width:100%; 
+  width:100%;
 }
 .tagging-curtags-wrapper label {
   padding:0px 0px 4px 20px;
-  margin-left:5px;  
-  background:url('tag.png') transparent no-repeat left center;  
+  margin-left:5px;
+  background:url('tag.png') transparent no-repeat left center;
   display:block;
 }
 
@@ -61,7 +63,7 @@ clear:both;
   background-color:#eee;
   padding:10px 0px 5px 0px;
   display:inline-block;
-  width:100%; 
+  width:100%;
 }
 
 .tagging-suggestions-wrapper label {

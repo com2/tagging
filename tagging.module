@@ -1,5 +1,8 @@
 <?php
-// $Id$
+// $Id:$
+
+// Author: Eugen Mayer (http://kontextwork.de)
+// Copyright 2010
 
 /*
  * hook_menu
@@ -172,36 +175,6 @@ function theme_tagging_suggestions_list($suggestions, $vid) {
     }
     // We have no suggestions, so no need to show any output
     return '';
-}
-
-/*
- * Example implementation of hook_tagging_suggestions *
- * @vid: This is the vid the suggestions have been called for. You can use this to decide whether you
- *       want to suggest something or not for this vocabulary
- * @node: This is the complete expanded node object. Use this to e.g. base your suggestions on the body
- *        of the node or the title or whatever you wish on
- */
-function tagging_tagging_suggestions($vid, $node) {
-  $suggestions = array();
-  // Dont show this, if the example is deactivated.
-  if(variable_get('tagging_show_suggestion_example', 1) == 1) {
-    $suggestions[] =  array('#name' => 'Drupal', '#weight' => 1);
-    $suggestions[] =  array('#name' => $node->title, '#weight' => 10);
-    $suggestions[] =  array('#name' => 'Drupal Wiki', '#weight' => 2);
-    $suggestions[] =  array('#name' => 'Impressive.media GbR', '#weight' => 3);
-  }
-
-  // Thats the way we use the API. Some simple short lines.
-  if(module_exists('extractor')) {
-    $terms = extractor_extract($node->body);
-
-    $result = array();
-    foreach($terms as $key => $term) {
-      $result[] = array('#weight' => (1/$key), '#name' => $term);
-    }
-    $suggestions = $result;
-  }
-  return $suggestions;
 }
 
 /*

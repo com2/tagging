@@ -1,0 +1,8 @@
+; $Id: tagging_extractor_suggest.info,v 1.1 2010/01/21 13:05:48 eugenmayer Exp $
+name = Tagging vocab extractor suggestions
+description = This plugins exposes suggestions as terms based on the title, teaser, body (cck), while only terms (and synonyms) of the vocabulary are used
+package = "Taxonomy"
+core = 6.x
+dependencies[] = tagging
+dependencies[] = extractor
+project = "tagging_vocab_extractor_suggest"

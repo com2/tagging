@@ -1,4 +1,4 @@
-# $Id$
+# $Id: tagging.pot,v 1.10.2.1 2010/03/18 08:50:23 eugenmayer Exp $
 #
 # LANGUAGE translation of Drupal (general)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
