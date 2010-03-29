@@ -62,6 +62,9 @@ function tagging_vocab_extractor_suggest_tagging_suggestions($vid, $node) {
  * extract all terms
  */
 function _tagging_vocab_extractor_suggest_cck_handler($cck_fields,$node) {
+  if($node == NULL) {
+    return array();
+  }
   $result = array();
   foreach($cck_fields as $field) {
      $field = trim($field);
