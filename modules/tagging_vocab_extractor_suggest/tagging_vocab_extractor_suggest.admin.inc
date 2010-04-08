@@ -13,6 +13,14 @@ function tagging_vocab_extractor_suggest_admin_settings() {
       '#valid' => 'string',
       '#default_value' => variable_get('tagging_vocab_extractor_suggest_cck', '')
   );
+   
+  $form['tagging_vocab_extractor_suggest_max_word_count'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Maximum word count'),
+      '#description' => t('Maximum word count of multi-word terms'),
+      '#valid' => 'string',
+      '#default_value' => variable_get('tagging_vocab_extractor_suggest_max_word_count', 4)
+  );
 
   return system_settings_form($form);
 }

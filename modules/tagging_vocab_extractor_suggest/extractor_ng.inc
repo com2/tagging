@@ -56,7 +56,22 @@ function extractor_ng_extract($text) {
  * Split text into words.
  */
 function _extractor_ng_split($text) {
-  return preg_split("/[\s,.:\-\(\)\[\]{}*\/]+/", $text);
+  $tmp = preg_split("/[\s,.:\-\(\)\[\]{}*\/]+/", $text);
+  
+  $result = array();
+  $max_word_count = variable_get('tagging_vocab_extractor_suggest_max_word_count', 4);
+
+  foreach($tmp as $key => $word) {
+	$result[] = $word;
+ 	for($i = 1;$i <=$max_word_count;$i++) {
+		if(array_key_exists(($key+$i),$tmp)) {
+			$word = "$word {$tmp[$key+$i]}";
+			$result[] = $word;
+		}
+	}	
+  }
+  
+  return $result;
 }
 
 /**
@@ -64,12 +79,12 @@ function _extractor_ng_split($text) {
  */
 function _extractor_ng_lookup($word) {
   // Do not bother if word starts with a numeric or if word is in stop word list.
-  if (is_numeric($word[0]) || in_array(strtolower($word), _extractor_ng_stopwords())) {
+  if (is_numeric($word[0]) || in_array($word, _extractor_ng_stopwords())) {
     return array();
   }
-  $word= strtolower($word);
   $terms = array();
-  $result = db_query('SELECT td.tid, td.name FROM {term_data} as td LEFT JOIN {term_synonym} as ts on ts.tid=td.tid WHERE td.vid = %d AND ( LOWER(td.name)="%s" OR LOWER(ts.name)="%s" )', variable_get('extractor_ng_vid', 1), $word, $word );
+  // COLLATE utf8_bin for cs
+  $result = db_query('SELECT td.tid, td.name FROM {term_data} as td LEFT JOIN {term_synonym} as ts on ts.tid=td.tid WHERE td.vid = %d AND ( td.name COLLATE utf8_bin ="%s" OR ts.name COLLATE utf8_bin ="%s" )', variable_get('extractor_ng_vid', 1), $word, $word );
   while ($term = db_fetch_object($result)) {
     $terms[$term->tid] = $term;
   }
