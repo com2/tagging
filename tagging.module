@@ -4,10 +4,9 @@
 // Author: Eugen Mayer (http://kontextwork.de)
 // Copyright 2010
 
-/*
+/**
  * hook_menu
  */
-
 function tagging_menu() {
   $items = array();
   $items['admin/settings/tagging/settings'] = array (
@@ -23,7 +22,7 @@ function tagging_menu() {
   return $items;
 }
 
-/*
+/**
  * Implementing hook_elements
  * Registering the new form element, so we can render the tagging form element properly
  */
@@ -69,7 +68,7 @@ function tagging_form_taxonomy_form_vocabulary_alter(&$form, $form_state ) {
   $form['#submit'][] = 'tagging_form_vocabulary_submit';
 }
 
-/*
+/**
  * Implementing hook_theme.
  */
 function tagging_theme() {
@@ -139,20 +138,21 @@ function theme_tagging_widget_wrapper($content, $vid) {
 /**
  * Rendering suggestions for a specific vocabulary
  */
-function theme_tagging_tags_list($tags, $vid) {    
-    $cur_tags = '';
-    // they are sorted already
-    foreach ($tags as $term) {
-      if($term == '') {
-        continue;
-      }
-      // TODO: use # here...but out of any reason it gets encoded to %23 in html
-      // using trim here, as mostly the old tagging system was "one, two, three"..
-      $term = "<div class='tagging-tag'>"._tagging_check_tag($term)."</div>";
-      $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'), 'fragment' => '#')));
-      $cur_tags .= $link;
+function theme_tagging_tags_list($tags, $vid) {
+  $cur_tags = '';
+  // they are sorted already
+  foreach ($tags as $term) {
+    if($term == '') {
+      continue;
     }
-    return "<div class='tagging-curtags-wrapper tagging-curtags-wrapper-$vid'><label>".t('Assigned Tags:')."</label>$cur_tags</div>";
+    // TODO: use # here...but out of any reason it gets encoded to %23 in html
+    // using trim here, as mostly the old tagging system was "one, two, three"..
+    $term = "<span class='tagging-tag'>"._tagging_check_tag($term)."</span>";
+    
+    $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'), 'fragment' => '#')));
+    $cur_tags .= $link;
+  }
+  return "<div class='tagging-curtags-wrapper tagging-curtags-wrapper-$vid'><label>".t('Assigned Tags:')."</label>$cur_tags</div>";
 }
 
 function _tagging_check_tag($tag) {
@@ -171,7 +171,7 @@ function theme_tagging_suggestions_list($suggestions, $vid) {
         continue;
       }
       // TODO: Use # here...but out of any reason it gets encoded to %23 in html.
-      $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>"._tagging_check_tag($term['#name'])."</div>";
+      $term = "<span id='tagging-$vid' class='tagging-suggest-tag'>"._tagging_check_tag($term['#name'])."</span>";
       $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Add tag'))));
       $suggested_tags .= $link;
     }
@@ -184,7 +184,7 @@ function theme_tagging_suggestions_list($suggestions, $vid) {
     return '';
 }
 
-/*
+/**
  * Defining new hook: hook_tagging_suggestion
  * Modules can use this hook to implement their methods to provide suggestions for tagging
  * the current node
@@ -218,7 +218,7 @@ function _tagging_add_suggestions($element) {
 }
 
 
-/*
+/**
  * Implementing #process of the form element tagging_widget.
  * Adding Javascript-Libraries needed, if a widget has been placed.
  */
@@ -229,10 +229,9 @@ function _tagging_widget_javascript($form_element, &$form_state) {
   return $form_element;
 }
 
-/*
+/**
  * Saving the variable, whether to show the widget for a taxonomy or not
  */
-
 function tagging_form_vocabulary_submit($form, &$form_state) {
   variable_set('tagging_inject_'. $form_state['values']['vid'], $form_state['values']['tagging_inject']);
   return TRUE;
