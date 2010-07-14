@@ -10,6 +10,7 @@
   padding:3px 19px 3px 3px;
   border:1px solid grey;
   -moz-border-radius:4px;
+  -webkit-border-radius: 4px;
   float:left;
 }
 
@@ -25,8 +26,9 @@
 #tagging-widget-container .form-item {
 	margin:0px;
 	padding:0px;
-clear:both;
+  clear:both;
 }
+
 #tagging-widget-container {
   clear:both;
 }
@@ -76,3 +78,19 @@ clear:both;
 #tagging-widget-container .field-suffix{
   float:left;
 }
+
+.taggin-widget-input-wrapper #autocomplete {
+  background-color:white;
+}
+
+.clearfix:after {
+  clear:both;
+  content:".";
+  display:block;
+  font-size:0;
+  height:0;
+  visibility:hidden;
+}
+
+.clearfix { display:block; }
+

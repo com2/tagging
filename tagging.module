@@ -105,12 +105,14 @@ function theme_tagging_widget($element) {
   // Its convention that the tagging-widget-VID class it addid. That vid will be used
   // to get the unique "context" id for all the other wrappers and functions.
   $element['#attributes']['class'] = "tagging-widget-input $id";
-  $element['#id']= "$id";
-  $element['#title']= "";
-  $element['#description'] = t("Type and press enter to add the tag");
-  $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper">';
+  $element['#id']= $id;
+  $element['#title']= ""; 
+  
+  if($element['#description'] == '') {
+    $element['#description'] = t("Type and press enter to add the tag");
+  }  
+  $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper clearfix">';
   $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div>';
-
   $output .= theme('tagging_tags_list',split(',',$element['#value']),$vid)
             .theme('textfield', $element)
             .theme('tagging_suggestions_list', $element['#suggestions'], $vid);
@@ -146,8 +148,8 @@ function theme_tagging_tags_list($tags, $vid) {
       }
       // TODO: use # here...but out of any reason it gets encoded to %23 in html
       // using trim here, as mostly the old tagging system was "one, two, three"..
-      $term = "<div class='tagging-tag'>".trim($term)."</div>";
-      $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'))));
+      $term = "<div class='tagging-tag'>".trim(check_plain($term))."</div>";
+      $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'), 'fragment' => '#')));
       $cur_tags .= $link;
     }
     return "<div class='tagging-curtags-wrapper tagging-curtags-wrapper-$vid'><label>".t('Assigned Tags:')."</label>$cur_tags</div>";

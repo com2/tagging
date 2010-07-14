@@ -1,6 +1,6 @@
 ; $Id:$
-name = Tagging vocabular suggestion
-description = This plugin exposes the all vocabulary terms as suggestions.
+name = Tagging full-vocabular suggestion
+description = This tagging module exposes all vocabulary terms of a the vocabulary as suggestions (no matter what is in the content).
 package = "Taxonomy"
 core = 6.x
 dependencies[] = taxonomy
