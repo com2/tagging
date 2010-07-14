@@ -1,6 +1,9 @@
 <?php
 // $Id$
 
+// Author: Eugen Mayer (http://kontextwork.de)
+// Copyright 2010
+
 /*
  * hook_menu
  */
@@ -102,12 +105,14 @@ function theme_tagging_widget($element) {
   // Its convention that the tagging-widget-VID class it addid. That vid will be used
   // to get the unique "context" id for all the other wrappers and functions.
   $element['#attributes']['class'] = "tagging-widget-input $id";
-  $element['#id']= "$id";
-  $element['#title']= "";
-  $element['#description'] = t("Type and press enter to add the tag");
-  $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper">';
+  $element['#id']= $id;
+  $element['#title']= ""; 
+  
+  if($element['#description'] == '') {
+    $element['#description'] = t("Type and press enter to add the tag");
+  }  
+  $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper clearfix">';
   $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div>';
-
   $output .= theme('tagging_tags_list',split(',',$element['#value']),$vid)
             .theme('textfield', $element)
             .theme('tagging_suggestions_list', $element['#suggestions'], $vid);
@@ -134,7 +139,7 @@ function theme_tagging_widget_wrapper($content, $vid) {
 /**
  * Rendering suggestions for a specific vocabulary
  */
-function theme_tagging_tags_list($tags, $vid) {
+function theme_tagging_tags_list($tags, $vid) {    
     $cur_tags = '';
     // they are sorted already
     foreach ($tags as $term) {
@@ -143,11 +148,19 @@ function theme_tagging_tags_list($tags, $vid) {
       }
       // TODO: use # here...but out of any reason it gets encoded to %23 in html
       // using trim here, as mostly the old tagging system was "one, two, three"..
-      $term = "<div class='tagging-tag'>".trim($term)."</div>";
-      $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'))));
+      $term = "<div class='tagging-tag'>"._tagging_check_tag($term)."</div>";
+      $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'), 'fragment' => '#')));
       $cur_tags .= $link;
     }
     return "<div class='tagging-curtags-wrapper tagging-curtags-wrapper-$vid'><label>".t('Assigned Tags:')."</label>$cur_tags</div>";
+}
+
+function _tagging_check_tag($tag) {
+  $tag = trim(check_plain($tag));
+  // We allow special characterss, but we cant use html_entity_decode
+  // as this would also allow arbitary html tags and javascript tags
+  $tag = str_replace('&amp;','&',$tag);
+  return $tag;
 }
 
 /**
@@ -161,7 +174,7 @@ function theme_tagging_suggestions_list($suggestions, $vid) {
         continue;
       }
       // TODO: Use # here...but out of any reason it gets encoded to %23 in html.
-      $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>".trim($term['#name'])."</div>";
+      $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>"._tagging_check_tag($term['#name'])."</div>";
       $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Add tag'))));
       $suggested_tags .= $link;
     }
@@ -172,36 +185,6 @@ function theme_tagging_suggestions_list($suggestions, $vid) {
     }
     // We have no suggestions, so no need to show any output
     return '';
-}
-
-/*
- * Example implementation of hook_tagging_suggestions *
- * @vid: This is the vid the suggestions have been called for. You can use this to decide whether you
- *       want to suggest something or not for this vocabulary
- * @node: This is the complete expanded node object. Use this to e.g. base your suggestions on the body
- *        of the node or the title or whatever you wish on
- */
-function tagging_tagging_suggestions($vid, $node) {
-  $suggestions = array();
-  // Dont show this, if the example is deactivated.
-  if(variable_get('tagging_show_suggestion_example', 1) == 1) {
-    $suggestions[] =  array('#name' => 'Drupal', '#weight' => 1);
-    $suggestions[] =  array('#name' => $node->title, '#weight' => 10);
-    $suggestions[] =  array('#name' => 'Drupal Wiki', '#weight' => 2);
-    $suggestions[] =  array('#name' => 'Impressive.media GbR', '#weight' => 3);
-  }
-
-  // Thats the way we use the API. Some simple short lines.
-  if(module_exists('extractor')) {
-    $terms = extractor_extract($node->body);
-
-    $result = array();
-    foreach($terms as $key => $term) {
-      $result[] = array('#weight' => (1/$key), '#name' => $term);
-    }
-    $suggestions = $result;
-  }
-  return $suggestions;
 }
 
 /*

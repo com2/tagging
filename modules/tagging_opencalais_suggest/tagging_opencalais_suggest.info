@@ -1,6 +1,6 @@
 ; $Id$
 name = Tagging opencalais suggestions
-description = This plugins exposes suggestions based on the current content using the the opencalais service
+description = This tagging module exposes suggestions based on the current content (body) using the semantic opencalais service
 package = "Taxonomy"
 core = 6.x
 dependencies[] = taxonomy
@@ -11,3 +11,10 @@ version = "6.x-2.0"
 core = "6.x"
 project = "tagging_opencalais_suggest"
 datestamp = "1259920274"
+
+; Information added by drupal.org packaging script on 2010-03-18
+version = "6.x-2.1"
+core = "6.x"
+project = "tagging"
+datestamp = "1268902508"
+
