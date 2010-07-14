@@ -76,7 +76,7 @@
         $(wrapper_sel+' '+tag_sel).each( function () {
           tags.push($(this).text());
         });
-        $(target_sel).val(Drupal.checkPlain(tags.join(',')));
+        $(target_sel).val(tags.join(','));
       }
 
       /*
