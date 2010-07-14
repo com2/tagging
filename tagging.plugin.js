@@ -35,19 +35,19 @@
 
       // **************** Helper methods *****************/
       /*
-        * Adds a tag to the visual list and to the hidden input field (target).
-        */
+      * Adds a tag to the visual list and to the hidden input field (target).
+      */
       function add_tag(tag, autoupdate) {
         tag = Drupal.checkPlain(tag);
-        $(wrapper_sel).append("<div class='"+tag_class+"'>"+tag+"</div>");
+        $(wrapper_sel).append("<span class='"+tag_class+"'>"+tag+"</span>");
         if(autoupdate) {
           update_tags();
         }
       }
 
       /*
-        * Removes a tag out of the visual list and out of the hidden input field (target).
-        */
+      * Removes a tag out of the visual list and out of the hidden input field (target).
+      */
       function remove_tag(e) {
         $(e).remove();
         unbind_taglist_events();
@@ -57,33 +57,34 @@
       }
 
       /*
-        * Hides a tag out of the visual list. Suggestions need this to restore later
-        */
+      * Hides a tag out of the visual list. Suggestions need this to restore later
+      */
       function hide_tag(e) {
         $(e).hide();
         unbind_taglist_events();
         update_tags();
         bind_taglist_events();
       }
+      
       /*
-        * Updates the hidden input textfield with current tags.
-        * We do so, that we later can pass the tags to the taxonomy validators
-        * and dont have to fight with module weights.
-        */
+      * Updates the hidden input textfield with current tags.
+      * We do so, that we later can pass the tags to the taxonomy validators
+      * and dont have to fight with module weights.
+      */
       function update_tags() {
         var tags = new Array();
         $(wrapper_sel+' '+tag_sel).each( function () {
           tags.push($(this).text());
         });
-        $(target_sel).val(Drupal.checkPlain(tags.join(',')));
+        $(target_sel).val(tags.join(','));
       }
 
       /*
-        * Checks, if the tag already exists. Lets avoid the dublicates
-        * we have seen in the past. We dont tell the use anything, we
-        * just do as we would have added it, as the user expects to have the tag
-        * added, no matter its there or not.
-        */
+      * Checks, if the tag already exists. Lets avoid the dublicates
+      * we have seen in the past. We dont tell the use anything, we
+      * just do as we would have added it, as the user expects to have the tag
+      * added, no matter its there or not.
+      */
       function tag_exists(tag) {
         var tag = Drupal.checkPlain($.trim(tag));
         var found = false;
@@ -97,9 +98,9 @@
       }
 
       /*
-        * If a tag is removed from the tag list, we check here if it was a suggestion before
-        * if yes, we show it again in the suggestion list
-        */
+      * If a tag is removed from the tag list, we check here if it was a suggestion before
+      * if yes, we show it again in the suggestion list
+      */
       function reshow_suggestion_if_exists(tag) {
         $(suggestions_wrapper_sel+' '+suggest_sel+':hidden').each(function() {
           if($(this).text() === tag) {
@@ -109,9 +110,9 @@
       }
 
       /*
-        * Adds the button to the inputfield. Actuall the button is optional
-        * as we also add (primary) by pressing enter.
-        */
+      * Adds the button to the inputfield. Actuall the button is optional
+      * as we also add (primary) by pressing enter.
+      */
       function bind_button() {
         $(button_sel).bind('click',function() {
           tags = $(input_sel).not('.tag-processed').val().split(',');
@@ -173,18 +174,19 @@
         // sel = suggestions_wrapper_sel + ' div' + suggest_sel + ":visble";
 
         // Fallback selector
-        sel = suggestions_wrapper_sel + ' div' + suggest_sel;
+        sel = suggestions_wrapper_sel + ' span' + suggest_sel;
         $(sel).each(function(){
           if( tag_exists($(this).text()) ) {
             $(this).hide();
           }
         });
       }
+      
       /*
-        * Adds the remove-tag methods to the tags in the wrapper.
-        */
+      * Adds the remove-tag methods to the tags in the wrapper.
+      */
       function bind_taglist_events() {
-        $(wrapper_sel+' div'+tag_sel+':not(div.processed)').each(function() {
+        $(wrapper_sel+' span'+tag_sel+':not(span.processed)').each(function() {
           $(this).addClass('processed');
           // We use non anonymuos binds to be properly able to unbind them.
           $(this).bind('click',remove_tag_click);
@@ -193,7 +195,7 @@
 
         // For suggestion, we only hide tags. When those tags are remove from the tag
         // list, we can simply check for the existence and show them again
-        $(suggestions_wrapper_sel+' div'+suggest_sel+':not(div.processed)').each(function() {
+        $(suggestions_wrapper_sel+' span'+suggest_sel+':not(span.processed)').each(function() {
           // We use non anonymuos binds to be able to properly unbind them
           $(this).addClass('processed');
           $(this).bind('click',add_suggestion_tag_click);
@@ -201,8 +203,8 @@
       }
 
       /*
-        * Click event for a suggested tag.
-        */
+      * Click event for a suggested tag.
+      */
       function add_suggestion_tag_click () {
         $(this).addClass('processed');
         tag = $(this).text();
@@ -216,16 +218,16 @@
       }
 
       /*
-        * Click event for a tag.
-        */
+      * Click event for a tag.
+      */
       function remove_tag_click() {
         remove_tag(this); return false;
       }
 
       /*
-        * During updating of the tags, we unbind the events to avoid
-        * sideffects.
-        */
+      * During updating of the tags, we unbind the events to avoid
+      * sideffects.
+      */
       function unbind_taglist_events() {
         $(wrapper_sel+' '+tag_sel).each(function() {
             $(this).removeClass('processed');
@@ -243,10 +245,10 @@
       }
 
       /*
-        * Extracts the content ID - for drupal thats the VID.
-        * This is extracted from the tagging-widget-XX class
-        * if the input element, which actuall has the tagging-widget class.
-        */
+      * Extracts the content ID - for drupal thats the VID.
+      * This is extracted from the tagging-widget-XX class
+      * if the input element, which actuall has the tagging-widget class.
+      */
       function get_context(classes) {
         context = null;
         $(classes.split(' ')).each(function(){
