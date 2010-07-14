@@ -139,7 +139,7 @@ function theme_tagging_widget_wrapper($content, $vid) {
 /**
  * Rendering suggestions for a specific vocabulary
  */
-function theme_tagging_tags_list($tags, $vid) {
+function theme_tagging_tags_list($tags, $vid) {    
     $cur_tags = '';
     // they are sorted already
     foreach ($tags as $term) {
@@ -148,11 +148,16 @@ function theme_tagging_tags_list($tags, $vid) {
       }
       // TODO: use # here...but out of any reason it gets encoded to %23 in html
       // using trim here, as mostly the old tagging system was "one, two, three"..
-      $term = "<div class='tagging-tag'>".trim(check_plain($term))."</div>";
+      $term = "<div class='tagging-tag'>"._tagging_check_tag($term)."</div>";
       $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Remove tag'), 'fragment' => '#')));
       $cur_tags .= $link;
     }
     return "<div class='tagging-curtags-wrapper tagging-curtags-wrapper-$vid'><label>".t('Assigned Tags:')."</label>$cur_tags</div>";
+}
+
+function _tagging_check_tag($tag) {
+  $tag = trim(check_plain($tag));
+  return $tag;
 }
 
 /**
@@ -166,7 +171,7 @@ function theme_tagging_suggestions_list($suggestions, $vid) {
         continue;
       }
       // TODO: Use # here...but out of any reason it gets encoded to %23 in html.
-      $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>".trim($term['#name'])."</div>";
+      $term = "<div id='tagging-$vid' class='tagging-suggest-tag'>"._tagging_check_tag($term['#name'])."</div>";
       $link = l($term, '', array('html' => true, 'attributes' => array('title' => t('Add tag'))));
       $suggested_tags .= $link;
     }
