@@ -146,14 +146,8 @@
       * use the selected item and add it to the tag-list.
       */
       function check_enter(event) {
-        charCode = 0;
-        if ($.browser.mozilla) {
-          charCode = event.charCode;
-        }
-        else {
-          charCode = event.keyCode
-        }
-        if (charCode == 13) {
+        var key = event.which;
+        if (key == 13) {
           $('#autocomplete').each(function() {
             this.owner.hidePopup();
           });
