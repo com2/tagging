@@ -110,10 +110,11 @@ function theme_tagging_widget($element) {
   if($element['#description'] == '') {
     $element['#description'] = t("Type and press enter to add the tag");
   }  
-  $element['#field_prefix'] = '<div class="taggin-widget-input-wrapper clearfix">';
-  $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input.'</div>';
+  $element['#field_suffix'] = theme('tagging_widget_button', $vid).$old_input;
   $output .= theme('tagging_tags_list',split(',',$element['#value']),$vid)
-            .theme('textfield', $element)
+            .'<div class="taggin-widget-input-wrapper clearfix">'
+               .theme('textfield', $element)
+            .'</div>'
             .theme('tagging_suggestions_list', $element['#suggestions'], $vid);
   $fieldset['#value'] = $output;
   $output = theme('fieldset',$fieldset);
