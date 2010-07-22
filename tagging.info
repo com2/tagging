@@ -4,11 +4,4 @@ description = This widget is replacing the default Drupal-Tagging-Interface with
 package = "Drupal Wiki"
 core = 6.x
 dependencies[] = taxonomy
-core = "6.x"
 project = "tagging"
-; Information added by drupal.org packaging script on 2010-03-18
-version = "6.x-2.1"
-core = "6.x"
-project = "tagging"
-datestamp = "1268902508"
-
