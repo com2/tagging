@@ -1,6 +1,6 @@
 ; $Id: tagging_extractor_suggest.info,v 1.1 2010/01/21 13:05:48 eugenmayer Exp $
 name = Tagging extractor suggestions
-description = This tagging moduile exposes suggestions based on the current node content (body) using the extractor module.
+description = This tagging module exposes suggestions based on the current node content (body) using the extractor module.
 package = "Taxonomy"
 core = 6.x
 dependencies[] = taxonomy
