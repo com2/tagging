@@ -86,10 +86,10 @@
       * added, no matter its there or not.
       */
       function tag_exists(tag) {
-        var tag = Drupal.checkPlain($.trim(tag));
+        var tag = $.trim(tag.toLowerCase());
         var found = false;
         $(wrapper_sel+' '+tag_sel).each(function() {
-          if($(this).text() == tag) {
+          if($(this).text().toLowerCase().trim() == tag) {
             found = true;
             return;
           }
