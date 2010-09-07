@@ -1,4 +1,4 @@
-// $Id: tagging.plugin.js,v 1.12.2.2 2010/03/18 08:50:23 eugenmayer Exp $
+// $Id$
 /**
  * @author Eugen Mayer (http://kontextwork.de)
  * @Copyright 2010 KontextWork

@@ -1,4 +1,6 @@
 <?php
+// $Id$
+
 require("AlchemyAPI.php");
 
 function tagging_alchemy_suggest_tagging_suggestions($vid, $node) {

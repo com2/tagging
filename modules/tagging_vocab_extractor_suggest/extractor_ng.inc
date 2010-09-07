@@ -1,5 +1,5 @@
 <?php
-// $Id: extractor_simple.inc,v 1.1 2009/12/04 15:01:46 alexb Exp $
+// $Id$
 
 /**
  * @file:

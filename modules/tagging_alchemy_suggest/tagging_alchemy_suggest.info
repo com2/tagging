@@ -1,4 +1,4 @@
-
+; $Id$
 name = Tagging AlchemyAPI suggestions
 description = This plugin exposes suggestions based on the current node content (body) using AlchemyAPI natural language processing technology. 
 package = "Taxonomy"
