@@ -8,7 +8,7 @@
     return this.each( function(){
       // **************** Init *****************/
       var context = get_context($(this).attr('class'));
-
+      
       if(context === null) {
         alert('cant initialize tagging-widget: "'+$(this).attr('id')+'"..did you forget the "taggig-widget-$CONTEXT" class?');
         return;
@@ -32,7 +32,7 @@
       check_dublicates();
 
       $(input_sel).val('');
-
+      $(this).addClass('tagging-processed');
       // **************** Helper methods *****************/
       /*
       * Adds a tag to the visual list and to the hidden input field (target).
@@ -133,12 +133,12 @@
       * Event for keypress on the input field of the tagging-widget.
       */
       function bind_enter() {
-        if ($.browser.mozilla || $.browser.opera) {
+       /* if ($.browser.mozilla || $.browser.opera) {
           $(input_sel).bind('keypress',check_enter);
         }
         else {
           $(input_sel).bind('keydown',check_enter);
-        }
+        }*/
       }
       
       /*
