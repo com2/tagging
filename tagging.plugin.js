@@ -133,12 +133,12 @@
       * Event for keypress on the input field of the tagging-widget.
       */
       function bind_enter() {
-       /* if ($.browser.mozilla || $.browser.opera) {
+        if ($.browser.mozilla || $.browser.opera) {
           $(input_sel).bind('keypress',check_enter);
         }
         else {
           $(input_sel).bind('keydown',check_enter);
-        }*/
+        }
       }
       
       /*
