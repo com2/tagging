@@ -89,7 +89,7 @@
         var tag = $.trim(tag.toLowerCase());
         var found = false;
         $(wrapper_sel+' '+tag_sel).each(function() {
-          if($(this).text().toLowerCase().trim() == tag) {
+          if($.trim($(this).text().toLowerCase()) == tag) {
             found = true;
             return;
           }
