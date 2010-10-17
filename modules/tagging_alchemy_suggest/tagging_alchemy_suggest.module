@@ -1,4 +1,6 @@
 <?php
+// $Id$
+
 require("AlchemyAPI.php");
 
 function tagging_alchemy_suggest_tagging_suggestions($vid, $node) {
@@ -13,6 +15,9 @@ function tagging_alchemy_suggest_tagging_suggestions($vid, $node) {
   }
   
   $postContent = $node->body;
+  if( null == $postContent ) {
+    return;
+  }
   $entityResult = $alchemyObj->HTMLGetRankedNamedEntities($postContent, "http://www.alchemyapi.com/tools/alchemytagger/?type=post");
 
   $keywordParams =  new AlchemyAPI_KeywordParams();
