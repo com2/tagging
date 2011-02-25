@@ -1,4 +1,3 @@
-// $Id$
 /**
  * @author Eugen Mayer (http://kontextwork.de)
  * @Copyright 2010 KontextWork

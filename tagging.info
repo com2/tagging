@@ -1,4 +1,3 @@
-; $Id$
 name = Tagging
 description = This widget is replacing the default Drupal-Tagging-Interface with a more visual driven one, to make tagging even easier. (by <a href="http://kontextwork.de"KontextWork</a>)
 package = "Drupal Wiki"

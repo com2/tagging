@@ -1,4 +1,3 @@
-; $Id$
 name = Tagging opencalais suggestions
 description = This tagging module exposes suggestions based on the current content (body) using the semantic opencalais service
 package = "Taxonomy"

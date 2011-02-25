@@ -1,4 +1,3 @@
-; $Id$
 name = Tagging full-vocabular suggestion
 description = This tagging module exposes all vocabulary terms of a the vocabulary as suggestions (no matter what is in the content).
 package = "Taxonomy"

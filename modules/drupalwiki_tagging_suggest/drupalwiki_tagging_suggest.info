@@ -1,4 +1,3 @@
-; $Id$
 name = Drupal Wiki taggin suggestions
 description = Suggesting terms for the Tagging-Module based on the current content and a algorythm developed for Drupal Wiki
 package = "Drupal Wiki"
