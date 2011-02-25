@@ -1,4 +1,3 @@
-// $Id$
 /**
  * @author Eugen Mayer
  * @Copyright Impressive.media GbR
