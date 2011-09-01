@@ -59,7 +59,7 @@ function tagging_field_widget_form(&$form, &$form_state, $field, $instance, $lan
       '#type' => 'item',
       '#attributes' => array(
         'class' => array(
-          'taggin-widget-input-wrapper',
+          'tagging-widget-input-wrapper',
           'clearfix',
         )
       ),
