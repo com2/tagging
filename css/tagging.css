@@ -54,9 +54,13 @@ div.tagging-curtags-wrapper ~ div.form-item, div.tagging-curtags-wrapper ~ div.f
   height: 16px;
 }
 
+.tagging-button-container {
+  display: inline-block;
+  padding: 3px 0px 0px 5px;
+}
+
 .tagging-button {
-  float:left;
-  margin:3px 0px 0px 5px;
+  display: inline-block;
   width:19px;
   height:19px;
   background:url('../images/add.png') transparent no-repeat center center;
@@ -105,8 +109,7 @@ div.tagging-widget-input-wrapper div.description {
 /**
  * instead use the elements directly or a seperate tagging class or other direct addressing...
  */
-.tagging-widget-input-wrapper:after,
-.tagging-button-container:after
+.tagging-widget-input-wrapper:after
 {
 	clear: both;
 	content: ' ';
@@ -123,9 +126,7 @@ div.tagging-widget-input-wrapper div.description {
 	Move to separate stylesheet if invalid CSS is a problem.
 */
 * html .tagging-widget-input-wrapper,
-* html .tagging-button-container,
-*:first-child+html .tagging-widget-input-wrapper,
-*:first-child+html .tagging-button-container
+*:first-child+html .tagging-widget-input-wrapper
 {
 	zoom: 1;
 }
