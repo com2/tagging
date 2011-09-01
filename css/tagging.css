@@ -102,14 +102,30 @@ div.tagging-widget-input-wrapper div.description {
   padding: 6px 0px 0px 0px;
 }
 
-.clearfix:after {
-  clear:both;
-  content:".";
-  display:block;
-  font-size:0;
-  height:0;
-  visibility:hidden;
+/**
+ * instead use the elements directly or a seperate tagging class or other direct addressing...
+ */
+.tagging-widget-input-wrapper:after,
+.tagging-button-container:after
+{
+	clear: both;
+	content: ' ';
+	display: block;
+	font-size: 0;
+	line-height: 0;
+	visibility: hidden;
+	width: 0;
+	height: 0;
 }
 
-.clearfix { display:block; }
-
+/*
+	The following zoom:1 rule is specifically for IE6 + IE7.
+	Move to separate stylesheet if invalid CSS is a problem.
+*/
+* html .tagging-widget-input-wrapper,
+* html .tagging-button-container,
+*:first-child+html .tagging-widget-input-wrapper,
+*:first-child+html .tagging-button-container
+{
+	zoom: 1;
+}
