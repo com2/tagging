@@ -4,14 +4,16 @@
 // Copyright 2010
 
 function tagging_vocab_suggest_tagging_suggestions($vid, $node) {
+  $suggestions = array();
+
   if(strpos(VERSION, '7') === 0) {
     $result  = db_query('select * from {taxonomy_term_data} where vid=:vid', array(':vid' => $vid));
     foreach($result as $term) {
       $suggestions[] = array('#weight' => $term->weight, '#name' => $term->name);
     }
-  } else {
+  }
+  else {
     $result  = db_query('select * from {term_data} where vid=%d', $vid);
-    $suggestions = array();
     while ($term = db_fetch_object($result)) {
       $suggestions[] = array('#weight' => $term->weight, '#name' => $term->name);
     }

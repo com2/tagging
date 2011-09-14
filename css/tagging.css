@@ -54,9 +54,13 @@ div.tagging-curtags-wrapper ~ div.form-item, div.tagging-curtags-wrapper ~ div.f
   height: 16px;
 }
 
+.tagging-button-container {
+  display: inline-block;
+  padding: 3px 0px 0px 5px;
+}
+
 .tagging-button {
-  float:left;
-  margin:3px 0px 0px 5px;
+  display: inline-block;
   width:19px;
   height:19px;
   background:url('../images/add.png') transparent no-repeat center center;
@@ -102,14 +106,27 @@ div.tagging-widget-input-wrapper div.description {
   padding: 6px 0px 0px 0px;
 }
 
-.clearfix:after {
-  clear:both;
-  content:".";
-  display:block;
-  font-size:0;
-  height:0;
-  visibility:hidden;
+/**
+ * instead use the elements directly or a seperate tagging class or other direct addressing...
+ */
+.tagging-widget-input-wrapper:after
+{
+	clear: both;
+	content: ' ';
+	display: block;
+	font-size: 0;
+	line-height: 0;
+	visibility: hidden;
+	width: 0;
+	height: 0;
 }
 
-.clearfix { display:block; }
-
+/*
+	The following zoom:1 rule is specifically for IE6 + IE7.
+	Move to separate stylesheet if invalid CSS is a problem.
+*/
+* html .tagging-widget-input-wrapper,
+*:first-child+html .tagging-widget-input-wrapper
+{
+	zoom: 1;
+}
