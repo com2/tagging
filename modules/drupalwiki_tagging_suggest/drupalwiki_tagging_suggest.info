@@ -3,7 +3,7 @@
 name = Drupal Wiki tagging suggestions
 description = Suggesting terms for the Tagging-Module based on the current content and a algorythm developed for Drupal Wiki
 package = Tagging
-core = 6.x
+core = 7.x
 dependencies[] = taxonomy
 dependencies[] = tagging
 files[] = drupalwiki_extractor.inc

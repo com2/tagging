@@ -7,7 +7,13 @@ function tagging_vocab_suggest_tagging_suggestions($vid, $node) {
   $suggestions = array();
 
   if(strpos(VERSION, '7') === 0) {
-    $result  = db_query('select * from {taxonomy_term_data} where vid=:vid', array(':vid' => $vid));
+    $query = db_select('taxonomy_term_data', 't');
+    $query->fields('t');
+    $query->condition('vid', $vid);
+    $query->addTag('translatable');
+    $query->addTag('term_access');
+    $result = $query->execute();
+
     foreach($result as $term) {
       $suggestions[] = array('#weight' => $term->weight, '#name' => $term->name);
     }
