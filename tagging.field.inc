@@ -139,6 +139,7 @@ function tagging_taxonomy_autocomplete_validate($element, &$form_state) {
 		 else {
 	     $element['#value'] = $element['input_field']['terms']['#value'];
 		 }
+
+    taxonomy_autocomplete_validate($element, $form_state);
 	}
-  taxonomy_autocomplete_validate($element, $form_state);
 }

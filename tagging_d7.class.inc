@@ -55,7 +55,6 @@ class tagging_d7 extends tagging_d6 {
 
   public function  _tagging_widget_javascript($form_element = null, &$form_state = array()) {
     $form_element = parent::_tagging_widget_javascript($form_element, $form_state);
-    drupal_add_js('jQuery(document).ready(function () {Drupal.behaviors.tagging_d7 = Drupal.behaviors.tagging_d6();});', array('type' => 'inline', 'scope' => 'footer'));
     return $form_element;
   }
 }
