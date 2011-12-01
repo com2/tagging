@@ -54,7 +54,10 @@ class tagging_d7 extends tagging_d6 {
   }
 
   public function  _tagging_widget_javascript($form_element = null, &$form_state = array()) {
-    $form_element = parent::_tagging_widget_javascript($form_element, $form_state);
+    drupal_add_css(drupal_get_path('module', 'tagging') . '/css/tagging.css');
+    drupal_add_js(drupal_get_path('module', 'tagging') . '/js/tagging.plugin.js');
+    // WE init the D7 version instead
+    drupal_add_js(drupal_get_path('module', 'tagging') . '/js/tagging.init.d7.js');
     return $form_element;
   }
 }
