@@ -26,7 +26,6 @@ function tagging_field_widget_info() {
  * Implements hook_field_widget_form().
  */
 function tagging_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-
   $settings = $instance['widget']['settings'];
 
   // iStryker April 7th, 2011: maybe a problem in the future.  only 1 allowed value is allowed so far.
@@ -84,7 +83,11 @@ function tagging_field_widget_form(&$form, &$form_state, $field, $instance, $lan
       '#markup' => theme('tagging_widget_button', array('element' => $element, 'vid' => $vid->vid)),
     );
 
-    $element['suggestions']['#markup'] = theme('tagging_suggestions_list', array('suggestions' => _tagging_get_suggestions($vid->vid, $form['nid']['#value']), 'vid' => $vid->vid));
+    // add suggestions only if we had a nid
+    // this is a workaround until we got entity support
+    if (isset($form['nid'])) {
+      $element['suggestions']['#markup'] = theme('tagging_suggestions_list', array('suggestions' => _tagging_get_suggestions($vid->vid, $form['nid']['#value']), 'vid' => $vid->vid));
+    }
 
     // Stores terms
     $element['input_field']['terms'] = array(
