@@ -142,7 +142,12 @@ function tagging_taxonomy_autocomplete_validate($element, &$form_state) {
 		 else {
 	     $element['#value'] = $element['input_field']['terms']['#value'];
 		 }
-
-    taxonomy_autocomplete_validate($element, $form_state);
 	}
+
+  // ensures that we have a #value or we get a error in taxonomy_autocomplete_validate
+  if (!isset($element['#value'])) {
+    $element['#value'] = '';
+  }
+
+  taxonomy_autocomplete_validate($element, $form_state);
 }
